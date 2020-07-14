@@ -1,28 +1,38 @@
 from django.db import models
+from django import forms
 
 
 class Test(models.Model):
-    test_title = models.CharField('название теста', max_length = 100)
-    pub_date = models.DateTimeField('дата публикации')
+    test_title = models.CharField(max_length=100)
+    pub_date = models.DateTimeField()
 
-    def __str__ (self):
+    def __str__(self):
         return self.test_title
 
     class Meta:
         verbose_name = 'Тест'
         verbose_name_plural = 'Тесты'
 
+
 class Question(models.Model):
-    test = models.ForeignKey(Test, on_delete = models.CASCADE)
-    with_options = models.BooleanField('тип вопроса')
-    text = models.TextField('текст вопроса')
-    image = models.ImageField('картинка')
-    options = models.TextField('варианты ответа')
-    correct_answers = models.TextField('правильные ответы')
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    with_options = models.BooleanField()
+    text = models.TextField()
+    image = models.ImageField()
+    options = models.TextField()
+    correct_answer = models.CharField(max_length=100)
 
-    def __str__(self):
-        return self.text
 
-    class Meta:
-        verbose_name = 'Вопрос'
-        verbose_name_plural = 'Вопросы'
+QUESTION_TYPES = (
+    ("1", "Вопрос с одним вариантом ответа"),
+    ("2", "Вопрос с несколькими вариантами ответа"),
+    ("3", "Вопрос с текстовым ответом")
+)
+
+
+class AddQuestion(forms.Form):
+    type = forms.ChoiceField(choices=QUESTION_TYPES, label="Тип вопроса")
+    text = forms.CharField(widget=forms.Textarea, label="Текст вопроса")
+    image = forms.ImageField(label="Картинка")
+    options = forms.CharField(widget=forms.Textarea, label="Варианты ответа")
+    correct_answer = forms.CharField(max_length=100, initial="", label="Правильный ответ")
