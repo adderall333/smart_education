@@ -8,7 +8,7 @@
     <title>Test constructor</title>
 </head>
 <body>
-    <form method="POST" action="{{ url }}">
+    <form method="POST" action="/test_constructor/add_question/?test={{test}}">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Добавить вопрос">
@@ -21,7 +21,7 @@
         {% for question in questions %}
         <tr>
             <td>{{ question.text }}</td>
-            <td><a href="edit/?text={{question.text}}">Изменить</a> | <a href="delete/?text={{question.text}}">Удалить</a></td>
+            <td><a href="edit/?test={{test}}&id={{question.id}}">Изменить</a> | <a href="delete/?test={{test}}&id={{question.id}}">Удалить</a></td>
         </tr>
         {% endfor %}
     </table>
