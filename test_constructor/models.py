@@ -1,9 +1,11 @@
 from django.db import models
 from django import forms
+from django.contrib.auth.models import User
 
 
 class Test(models.Model):
     title = models.CharField(max_length=100, default="")
+    author = models.ForeignKey(User, default=None, on_delete=models.CASCADE, null=True)
     pub_date = models.DateTimeField()
 
     def __str__(self):

@@ -13,6 +13,7 @@ def add_test(request):
     if request.method == "POST":
         test = Test()
         test.title = request.POST.get("title")
+        test.author = request.user
         test.pub_date = datetime.datetime.now()
         test.save()
         return HttpResponseRedirect("/test_constructor/new_test/?test={0}".format(test.title))
@@ -39,8 +40,9 @@ def add_question(request):
         return HttpResponseRedirect("/test_constructor/new_test/?test={0}".format(test))
 
 
-def edit(request, text):
+def edit(request):
     try:
+        text = request.GET.get("text")
         question = Question.objects.get(text=text)
 
         if request.method == "POST":

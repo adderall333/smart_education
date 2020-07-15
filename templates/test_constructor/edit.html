@@ -8,10 +8,29 @@
     <title>Test constructor</title>
 </head>
 <body>
-    <form method="POST" action="{{ url }}">
+    <form method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Добавить вопрос">
+        <p>
+            <label>Количество вариантов ответа</label>
+            <input type="number" name="options_count" value="{{question.options_count}}">
+        </p>
+        <p>
+            <label>Текст вопроса</label>
+            <textarea name="text" cols="40" rows="10">{{question.text}}</textarea>
+        </p>
+        <p>
+            <label>Картинка</label>
+            <input type="image" name="image" value="{{question.image}}">
+        </p>
+        <p>
+            <label>Варианты ответа</label>
+            <textarea name="options" cols="40" rows="10">{{question.options}}</textarea>
+        </p>
+        <p>
+            <label>Правильный ответ</label>
+            <input type="text" name="correct_answer" value="{{question.correct_answer}}">
+        </p>
+        <input type="submit" value="Изменить вопрос">
     </form>
 </body>
 </html>
