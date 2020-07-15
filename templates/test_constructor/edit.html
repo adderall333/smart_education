@@ -13,11 +13,5 @@
         {{ form.as_p }}
         <input type="submit" value="Добавить вопрос">
     </form>
-    {% if questions.count > 0 %}
-    <h3>Список вопросов</h3>
-        {% for question in questions %}
-            <p>{{question.text}}</p>
-        {% endfor %}
-    {% endif %}
 </body>
 </html>
