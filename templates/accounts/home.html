@@ -1,6 +1,7 @@
 {% extends 'accounts/base.html' %}
  
 {% block content %}
+{% csrf_token %}
   {% for post in object_list %}
     <div class="post-entry">
       <h2><a href="{% url 'home' %}">{{ post.title }}</a></h2>
