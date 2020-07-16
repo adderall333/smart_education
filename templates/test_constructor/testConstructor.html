@@ -8,16 +8,23 @@
     <title>Test constructor</title>
 </head>
 <body>
-    <form action="add_question/">
+    <form method="POST" action="{{ url }}">
         {% csrf_token %}
-        {{ form }}
+        {{ form.as_p }}
         <input type="submit" value="Добавить вопрос">
     </form>
+
     {% if questions.count > 0 %}
     <h3>Список вопросов</h3>
+    <table>
+        <thead><th>Текст вопроса</th><th></th></thead>
         {% for question in questions %}
-            {{question.text}}
+        <tr>
+            <td>{{ question.text }}</td>
+            <td><a href="edit/?text={{question.text}}">Изменить</a> | <a href="delete/?text={{question.text}}">Удалить</a></td>
+        </tr>
         {% endfor %}
+    </table>
     {% endif %}
 </body>
 </html>
