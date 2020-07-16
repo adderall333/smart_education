@@ -1,5 +1,4 @@
 from django.db import models
-from django import forms
 from django.contrib.auth.models import User
 
 
@@ -18,20 +17,12 @@ class Test(models.Model):
 
 class Question(models.Model):
     test_title = models.CharField(max_length=100, default="")
-    options_count = models.IntegerField(default=0)
     text = models.TextField()
     image = models.ImageField()
-    options = models.TextField()
-    correct_answer = models.CharField(max_length=100, default="")
 
 
-class TestForm(forms.Form):
-    title = forms.CharField(label="Название теста")
+class Option(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    text = models.CharField(max_length=100, default="")
+    is_correct = models.BooleanField()
 
-
-class QuestionForm(forms.Form):
-    options_count = forms.IntegerField(label="Количество вариантов ответа", min_value=0, max_value=20)
-    text = forms.CharField(widget=forms.Textarea, label="Текст вопроса", required=True)
-    image = forms.ImageField(label="Картинка", required=False)
-    options = forms.CharField(widget=forms.Textarea, label="Варианты ответа", required=False)
-    correct_answer = forms.CharField(max_length=100, initial="", label="Правильный ответ", required=True)
