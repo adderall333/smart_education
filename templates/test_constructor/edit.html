@@ -12,11 +12,11 @@
         {% csrf_token %}
         <p>
             <label>Количество вариантов ответа</label>
-            <input type="number" name="options_count" value="{{question.options_count}}">
+            <input type="number" name="options_count" value="{{question.options_count}}" min="0" max="20" required>
         </p>
         <p>
             <label>Текст вопроса</label>
-            <textarea name="text" cols="40" rows="10">{{question.text}}</textarea>
+            <textarea name="text" cols="40" rows="10" required>{{question.text}}</textarea>
         </p>
         <p>
             <label>Картинка</label>
@@ -28,7 +28,7 @@
         </p>
         <p>
             <label>Правильный ответ</label>
-            <input type="text" name="correct_answer" value="{{question.correct_answer}}">
+            <input type="text" name="correct_answer" value="{{question.correct_answer}}" required>
         </p>
         <input type="submit" value="Изменить вопрос">
     </form>

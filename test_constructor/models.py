@@ -30,8 +30,8 @@ class TestForm(forms.Form):
 
 
 class QuestionForm(forms.Form):
-    options_count = forms.IntegerField(label="Количество вариантов ответа")
-    text = forms.CharField(widget=forms.Textarea, label="Текст вопроса")
+    options_count = forms.IntegerField(label="Количество вариантов ответа", min_value=0, max_value=20)
+    text = forms.CharField(widget=forms.Textarea, label="Текст вопроса", required=True)
     image = forms.ImageField(label="Картинка", required=False)
     options = forms.CharField(widget=forms.Textarea, label="Варианты ответа", required=False)
-    correct_answer = forms.CharField(max_length=100, initial="", label="Правильный ответ")
+    correct_answer = forms.CharField(max_length=100, initial="", label="Правильный ответ", required=True)
