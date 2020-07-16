@@ -3,11 +3,11 @@ from django import forms
 
 
 class Test(models.Model):
-    test_title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, default="")
     pub_date = models.DateTimeField()
 
     def __str__(self):
-        return self.test_title
+        return self.title
 
     class Meta:
         verbose_name = 'Тест'
@@ -20,7 +20,7 @@ class Question(models.Model):
     text = models.TextField()
     image = models.ImageField()
     options = models.TextField()
-    correct_answer = models.CharField(max_length=100)
+    correct_answer = models.CharField(max_length=100, default="")
 
 
 QUESTION_TYPES = (
@@ -30,7 +30,11 @@ QUESTION_TYPES = (
 )
 
 
-class AddQuestion(forms.Form):
+class TestForm(forms.Form):
+    title = forms.CharField(label="Название теста")
+
+
+class QuestionForm(forms.Form):
     type = forms.ChoiceField(choices=QUESTION_TYPES, label="Тип вопроса")
     text = forms.CharField(widget=forms.Textarea, label="Текст вопроса")
     image = forms.ImageField(label="Картинка")

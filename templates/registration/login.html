@@ -1,0 +1,23 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Вход
+{% endblock %}
+
+{% block navlinks %}
+  <a class="nav-link" href="/">Главная страница</a>
+  <a class="nav-link active" href="/accounts/login">Вход</a>
+  <a class="nav-link" href="/accounts/signup">Регистрация</a>
+{% endblock %}
+
+{% block maincontent %}
+  <div>
+    <h1>Вход</h1>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <!--<button type="submit">Войти</button>-->
+      <button class="btn btn-lg btn-primary" type="submit">Войти</button>
+    </form>
+  </div>
+{% endblock %}
