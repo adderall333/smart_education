@@ -12,11 +12,11 @@
 
 {% block maincontent %}
   <div>
-    <h1>Регистрация</h1>
+    <h1 class="cover-heading">Регистрация</h1>
     <form method="post"> {% csrf_token %}
       {{ form.as_p }}
       <!--<button type="submit">Зарегистрироваться</button>-->
-      <button class="btn btn-lg btn-primary" type="submit">Зарегистрироваться</button>
+      <button class="btn btn-lg btn-secondary" type="submit">Зарегистрироваться</button>
     </form>
   </div>
 {% endblock %}

@@ -74,7 +74,7 @@ body {
 
 .nav-masthead .active {
   color: #fff;
-  border-bottom-color: #fff;
+  border-bottom-color: #f45;
 }
 
 @media (min-width: 48em) {
@@ -104,4 +104,9 @@ body {
  */
 .mastfoot {
   color: rgba(255, 255, 255, .5);
+}
+
+.cover-heading {
+  color: #fff;
+  padding: 0.65rem;
 }
