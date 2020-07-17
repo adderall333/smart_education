@@ -10,7 +10,8 @@
 <body>
     <form method="POST" action="add_test/">
         {% csrf_token %}
-        {{ form }}
+        <label>Название теста</label>
+        <input type="text" name="title">
         <input type="submit" value="Создать новый тест">
     </form>
 </body>

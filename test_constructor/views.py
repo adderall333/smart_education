@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.http import HttpResponseNotFound
-from .models import Test, Question, TestForm, QuestionForm
+from .models import Test, Question, Option
 import datetime
 
 
 def index(request):
-    return render(request, 'test_constructor/index.html', {"form": TestForm})
+    return render(request, 'test_constructor/index.html')
 
 
 def add_test(request):
@@ -21,9 +21,9 @@ def add_test(request):
 
 def new_test(request):
     test = request.GET.get("test")
-    url = "/test_constructor/add_question/?test={0}".format(test)
     questions = Question.objects.filter(test_title=test)
-    return render(request, "test_constructor/testConstructor.html", {"questions": questions, "form": QuestionForm, "url": url})
+    return render(request, "test_constructor/testConstructor.html",
+                  {"questions": questions, "test": test})
 
 
 def add_question(request):
@@ -31,19 +31,27 @@ def add_question(request):
         question = Question()
         test = request.GET.get("test")
         question.test_title = test
+        question.id = request.GET.get("id")
         question.options_count = request.POST.get("options_count")
         question.text = request.POST.get("text")
         question.image = request.POST.get("image")
-        question.options = request.POST.get("options")
-        question.correct_answer = request.POST.get("correct_answer")
         question.save()
+        for i in range(20):
+            try:
+                option = Option()
+                option.text = request.POST.get("option" + str(i + 1))
+                option.question = question
+                option.is_correct = True #request.POST.get("correct" + str(i + 1))
+                option.save()
+            except:
+                break
         return HttpResponseRedirect("/test_constructor/new_test/?test={0}".format(test))
 
 
 def edit(request):
     try:
-        text = request.GET.get("text")
-        question = Question.objects.get(text=text)
+        id = request.GET.get("id")
+        question = Question.objects.get(id=id)
 
         if request.method == "POST":
             test = request.GET.get("test")
@@ -56,5 +64,16 @@ def edit(request):
             return HttpResponseRedirect("/test_constructor/new_test/?test={0}".format(test))
         else:
             return render(request, "test_constructor/edit.html", {"question": question})
+    except Question.DoesNotExist:
+        return HttpResponseNotFound("<h2>Question not found</h2>")
+
+
+def delete(request):
+    try:
+        id = request.GET.get("id")
+        test = request.GET.get("test")
+        question = Question.objects.get(id=id)
+        question.delete()
+        return HttpResponseRedirect("/test_constructor/new_test/?test={0}".format(test))
     except Question.DoesNotExist:
         return HttpResponseNotFound("<h2>Question not found</h2>")

@@ -17,7 +17,7 @@ class SignUpView(generic.CreateView):
             form = MyUserCreationForm(self.POST)
             if form.is_valid():
                 form.save()
-            username = form.cleaned_data.get('username')
+            username = form.cleaned_data.get('email')
             my_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=my_password)
             login(self, user)

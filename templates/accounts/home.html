@@ -6,7 +6,7 @@
 <h2>Ваши тесты:</h2>
 {% if tests %}
     {% for test in tests %}
-         <a href="{% url 'detail' test.id %}">{{ test.test_title }}</a>
+         <a href="{% url 'test' test.id %}">{{ test.test_title }}</a>
     {% endfor %}
 {% else %}
       <h4>У вас еще нет тестов. Давайте создадим</h4>

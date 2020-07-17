@@ -1,4 +1,5 @@
 <!doctype html>
+{% load static %}
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -6,11 +7,22 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Test constructor</title>
+    <script type="text/javascript" src={% static "test_constructor/test_constructor.js" %}></script>
 </head>
 <body>
-    <form method="POST" action="{{ url }}">
+    <form method="POST" action="/test_constructor/add_question/?test={{test}}">
         {% csrf_token %}
-        {{ form.as_p }}
+        <div>
+            <label>Текст вопроса</label>
+            <textarea name="text" required></textarea>
+        </div>
+        <div>
+            <label>Картинка</label>
+            <input type="file" name="image" accept="image/*">
+        </div><label>Варианты ответа</label>
+        <div id="input0"></div>
+        <button type="button" onclick="addInput()">+</button>
+        <button type="button" onclick="removeInput()">-</button>
         <input type="submit" value="Добавить вопрос">
     </form>
 
@@ -21,7 +33,7 @@
         {% for question in questions %}
         <tr>
             <td>{{ question.text }}</td>
-            <td><a href="edit/?text={{question.text}}">Изменить</a> | <a href="delete/?text={{question.text}}">Удалить</a></td>
+            <td><a href="edit/?test={{test}}&id={{question.id}}">Изменить</a> | <a href="delete/?test={{test}}&id={{question.id}}">Удалить</a></td>
         </tr>
         {% endfor %}
     </table>

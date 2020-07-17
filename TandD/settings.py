@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
     'main',
-    'test_constructor'
+    'test_constructor',
 ]
 
 MIDDLEWARE = [
@@ -118,4 +118,3 @@ STATICFILES_DIRS = [
 ]
 
 LOGIN_REDIRECT_URL = 'home'
-# LOGOUT_REDIRECT_URL = 'home'

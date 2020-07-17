@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import SignUpView, Account
+from django.contrib.auth import views
 
 
 urlpatterns = [
