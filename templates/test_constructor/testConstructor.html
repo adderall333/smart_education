@@ -1,13 +1,42 @@
 <!doctype html>
-<html lang=ru>
+{% load static %}
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Test constructor</title>
+    <script type="text/javascript" src={% static "test_constructor/test_constructor.js" %}></script>
 </head>
 <body>
+    <form method="POST" action="/test_constructor/add_question/?test={{test}}">
+        {% csrf_token %}
+        <div>
+            <label>Текст вопроса</label>
+            <textarea name="text" required></textarea>
+        </div>
+        <div>
+            <label>Картинка</label>
+            <input type="file" name="image" accept="image/*">
+        </div><label>Варианты ответа</label>
+        <div id="input0"></div>
+        <button type="button" onclick="addInput()">+</button>
+        <button type="button" onclick="removeInput()">-</button>
+        <input type="submit" value="Добавить вопрос">
+    </form>
 
+    {% if questions.count > 0 %}
+    <h3>Список вопросов</h3>
+    <table>
+        <thead><th>Текст вопроса</th><th></th></thead>
+        {% for question in questions %}
+        <tr>
+            <td>{{ question.text }}</td>
+            <td><a href="edit/?test={{test}}&id={{question.id}}">Изменить</a> | <a href="delete/?test={{test}}&id={{question.id}}">Удалить</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
 </body>
 </html>

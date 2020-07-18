@@ -1,13 +1,14 @@
 from django.db import models
-from django import forms
+from django.contrib.auth.models import User
 
 
 class Test(models.Model):
-    test_title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, default="")
+    author = models.ForeignKey(User, default=None, on_delete=models.CASCADE, null=True)
     pub_date = models.DateTimeField()
 
     def __str__(self):
-        return self.test_title
+        return self.title
 
     class Meta:
         verbose_name = 'Тест'
@@ -15,24 +16,13 @@ class Test(models.Model):
 
 
 class Question(models.Model):
-    test = models.ForeignKey(Test, on_delete=models.CASCADE)
-    with_options = models.BooleanField()
+    test_title = models.CharField(max_length=100, default="")
     text = models.TextField()
     image = models.ImageField()
-    options = models.TextField()
-    correct_answer = models.CharField(max_length=100)
 
 
-QUESTION_TYPES = (
-    ("1", "Вопрос с одним вариантом ответа"),
-    ("2", "Вопрос с несколькими вариантами ответа"),
-    ("3", "Вопрос с текстовым ответом")
-)
+class Option(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    text = models.CharField(max_length=100, default="")
+    is_correct = models.BooleanField()
 
-
-class AddQuestion(forms.Form):
-    type = forms.ChoiceField(choices=QUESTION_TYPES, label="Тип вопроса")
-    text = forms.CharField(widget=forms.Textarea, label="Текст вопроса")
-    image = forms.ImageField(label="Картинка")
-    options = forms.CharField(widget=forms.Textarea, label="Варианты ответа")
-    correct_answer = forms.CharField(max_length=100, initial="", label="Правильный ответ")

@@ -1,0 +1,15 @@
+
+{% block content %}
+{% if user.is_authenticated %}
+   <a href="/">Выйти</a>
+{% endif %}
+<h2>Ваши тесты:</h2>
+{% if tests %}
+    {% for test in tests %}
+         <a href="{% url 'test' test.id %}">{{ test.test_title }}</a>
+    {% endfor %}
+{% else %}
+      <h4>У вас еще нет тестов. Давайте создадим</h4>
+{% endif %}
+<a href="/test_constructor">Создать тест</a>
+{% endblock %}
