@@ -8,3 +8,5 @@ urlpatterns = [
     path('home/', Account.home, name='home'),
     path('<int:test_id>/', Account.test, name='test'),
 ]
+
+

@@ -25,4 +25,3 @@ class Option(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     text = models.CharField(max_length=100, default="")
     is_correct = models.BooleanField()
-

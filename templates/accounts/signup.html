@@ -1,10 +1,22 @@
-{% extends 'accounts/base.html' %}
+{% extends 'main/base.html' %}
 
-{% block content %}
-<h2>Регистрация</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Зарегистрироваться</button>
-</form>
-{% endblock content%}
+{% block title %}
+Регистрация
+{% endblock %}
+
+{% block navlinks %}
+  <a class="nav-link" href="/">Главная страница</a>
+  <a class="nav-link" href="/accounts/login">Вход</a>
+  <a class="nav-link active" href="/accounts/signup">Регистрация</a>
+{% endblock %}
+
+{% block maincontent %}
+  <div>
+    <h1 class="cover-heading">Регистрация</h1>
+    <form method="post"> {% csrf_token %}
+      {{ form.as_p }}
+      <!--<button type="submit">Зарегистрироваться</button>-->
+      <button class="btn btn-lg btn-secondary" type="submit">Зарегистрироваться</button>
+    </form>
+  </div>
+{% endblock %}
