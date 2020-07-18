@@ -1,9 +1,9 @@
-{% extends 'accounts/base.html' %} &nbsp;
-{% block content %}
+{% extends 'accounts/menu_base.html' %} &nbsp;
+{% block content2 %}
 <h2>Вход</h2>
 <form method="post">
   {% csrf_token %}
   {{ form.as_p }}
   <button type="submit">Войти</button>
 </form>
-{% endblock content %}
+{% endblock content2 %}
