@@ -10,16 +10,21 @@
     <script type="text/javascript" src={% static "test_constructor/test_constructor.js" %}></script>
 </head>
 <body>
-    <form method="POST" action="/test_constructor/add_question/?test={{test}}">
+    <form method="POST" action="/test_constructor/add_question/?code={{code}}">
         {% csrf_token %}
         <div>
             <label>Текст вопроса</label>
             <textarea name="text" required></textarea>
         </div>
         <div>
+            <label>Стоимость вопроса</label>
+            <input type="number" name="amount_of_points" required>
+        </div>
+        <div>
             <label>Картинка</label>
             <input type="file" name="image" accept="image/*">
-        </div><label>Варианты ответа</label>
+        </div>
+        <label>Варианты ответа</label>
         <div id="input0"></div>
         <button type="button" onclick="addInput()">+</button>
         <button type="button" onclick="removeInput()">-</button>
@@ -29,11 +34,12 @@
     {% if questions.count > 0 %}
     <h3>Список вопросов</h3>
     <table>
-        <thead><th>Текст вопроса</th><th></th></thead>
+        <thead><th>Текст вопроса</th><th>Стоимость</th><th></th></thead>
         {% for question in questions %}
         <tr>
             <td>{{ question.text }}</td>
-            <td><a href="edit/?test={{test}}&id={{question.id}}">Изменить</a> | <a href="delete/?test={{test}}&id={{question.id}}">Удалить</a></td>
+            <td>{{ question.amount_of_points }}</td>
+            <td><a href="edit/?code={{code}}&id={{question.id}}">Изменить</a> | <a href="delete/?code={{code}}&id={{question.id}}">Удалить</a></td>
         </tr>
         {% endfor %}
     </table>

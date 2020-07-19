@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.http import HttpResponseNotFound
 from .models import Test, Question, Option
 import datetime
+import random
 
 
 def index(request):
@@ -15,24 +16,30 @@ def add_test(request):
         test.title = request.POST.get("title")
         test.author = request.user
         test.pub_date = datetime.datetime.now()
+        while True:
+            code = random.randint(10000000, 99999999)
+            if Test.objects.filter(code=code).count() == 0:
+                test.code = code
+                break
         test.save()
-        return HttpResponseRedirect("/test_constructor/new_test/?test={0}".format(test.title))
+        return HttpResponseRedirect("/test_constructor/test/?code={0}".format(test.code))
 
 
 def new_test(request):
-    test = request.GET.get("test")
-    questions = Question.objects.filter(test_title=test)
+    code = request.GET.get("code")
+    questions = Question.objects.filter(test_code=code)
     return render(request, "test_constructor/testConstructor.html",
-                  {"questions": questions, "test": test})
+                  {"questions": questions, "code": code})
 
 
 def add_question(request):
     if request.method == "POST":
         question = Question()
-        test = request.GET.get("test")
-        question.test_title = test
+        code = request.GET.get("code")
+        question.test_code = code
         question.id = request.GET.get("id")
         question.text = request.POST.get("text")
+        question.amount_of_points = request.POST.get("amount_of_points")
         question.image = request.POST.get("image")
         question.save()
         for i in range(20):
@@ -44,7 +51,7 @@ def add_question(request):
                 option.save()
             except:
                 break
-        return HttpResponseRedirect("/test_constructor/new_test/?test={0}".format(test))
+        return HttpResponseRedirect("/test_constructor/test/?code={0}".format(code))
 
 
 def edit(request):
@@ -54,8 +61,9 @@ def edit(request):
         options = question.option_set.all()
 
         if request.method == "POST":
-            test = request.GET.get("test")
+            code = request.GET.get("code")
             question.text = request.POST.get("text")
+            question.amount_of_points = request.POST.get("amount_of_points")
             question.image = request.POST.get("image")
             question.save()
             i = 0
@@ -76,7 +84,7 @@ def edit(request):
                     option.save()
                 except:
                     break
-            return HttpResponseRedirect("/test_constructor/new_test/?test={0}".format(test))
+            return HttpResponseRedirect("/test_constructor/test/?code={0}".format(code))
         else:
             return render(request, "test_constructor/edit.html", {"question": question, "options": options})
     except Question.DoesNotExist:
@@ -86,9 +94,9 @@ def edit(request):
 def delete(request):
     try:
         id = request.GET.get("id")
-        test = request.GET.get("test")
+        code = request.GET.get("code")
         question = Question.objects.get(id=id)
         question.delete()
-        return HttpResponseRedirect("/test_constructor/new_test/?test={0}".format(test))
+        return HttpResponseRedirect("/test_constructor/test/?code={0}".format(code))
     except Question.DoesNotExist:
         return HttpResponseNotFound("<h2>Question not found</h2>")

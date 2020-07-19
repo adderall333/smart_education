@@ -9,16 +9,21 @@
     <title>Test constructor</title>
 </head>
 <body>
-    <form method="POST" id="form" info="{{ options.count }}">
+    <form method="POST" id="form" info="{{options.count}}">
         {% csrf_token %}
         <div>
             <label>Текст вопроса</label>
             <textarea name="text" required>{{ question.text }}</textarea>
         </div>
         <div>
+            <label>Стоимость вопроса</label>
+            <input type="number" name="amount_of_points" value="{{question.amount_of_points}}" required>
+        </div>
+        <div>
             <label>Картинка</label>
             <input type="file" name="image" accept="image/*">
-        </div><label>Варианты ответа</label>
+        </div>
+        <label>Варианты ответа</label>
         <div id="input0"></div>
         <button type="button" onclick="addInput()">+</button>
         <button type="button" onclick="removeInput()">-</button>
