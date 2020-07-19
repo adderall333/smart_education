@@ -24,10 +24,9 @@ a:hover {
  * Base structure
  */
 
-
 html,
 body {
-  height: 100%;
+  height: auto;
   background-color: #333;
 }
 
@@ -40,6 +39,7 @@ body {
 }
 
 .cover-container {
+  min-height: 100vh;
   max-width: 52em;
 }
 
@@ -105,6 +105,7 @@ body {
  */
 .mastfoot {
   color: rgba(255, 255, 255, .5);
+  height: 50px;
 }
 
 .cover-heading {
@@ -128,4 +129,8 @@ td.leftcol { /* Левая ячейка */
   width: 35%;
   vertical-align: center;
   text-align: left;
+}
+
+.div-center {
+  margin:20px auto;
 }
