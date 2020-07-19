@@ -1,16 +1,55 @@
+{% extends 'main/base.html' %}
 
+{% block title %}
+Личный Кабинет
+{% endblock%}
 
-{% block content %}
+{% block navlinks %}
+    <a class="nav-link" href="/">Главная страница</a>
 {% if user.is_authenticated %}
-   <a href="/">Выйти</a>
+    <a class="nav-link active" href="/accounts/home">Личный кабинет</a>
+    <a class="nav-link" href="{% url 'logout'%}">Выйти</a>
 {% endif %}
-<h2>Ваши тесты:</h2>
-{% if tests %}
-    {% for test in tests %}
-         <a href="{% url 'test' test.id %}">{{ test.test_title }}</a>
-    {% endfor %}
-{% else %}
-      <h4>У вас еще нет тестов. Давайте создадим</h4>
-{% endif %}
-<a href="/test_constructor">Создать тест</a>
+{% endblock %}
+
+{% block maincontent %}
+    <h1 class="cover-heading">Ваши тесты:</h1>
+    {% if tests %}
+        {% for test in tests %}
+
+            <table class="test">
+                <tr>
+                    <td class="leftcol">{{ test.title }}</td>
+                    <td class="rightcol">
+                        <a href="/test_constructor/test/?code={{test.code}}" class="btn btn-sm btn-secondary mt-1 mb-1">Редактировать</a>
+                        <a href="/test_constructor/delete_test/?code={{test.code}}" class="btn btn-sm btn-secondary mt-1 mb-1">Удалить</a>
+                        <a href="#" name="code_btn" class="btn btn-sm btn-secondary mt-1 mb-1">Получить код</a>
+                        <a href="#" class="btn btn-sm btn-secondary mt-1 mb-1">Просмотреть результаты</a>
+                    </td>
+                </tr>
+            </table>
+            <script>
+                const btn = document.getElementsByName("code_btn")[0];
+                var code = {{test.code}};
+                btn.addEventListener('click', () => {
+                    navigator.clipboard.writeText(code)
+                    .then(() => {
+                        if (btn.innerText !== 'Скопировано') {
+                            const originalText = btn.innerText;
+                            btn.innerText = "Скопировано"
+                            setTimeout(() => {
+                                btn.innerText = originalText;
+                            }, 1500);
+                        }
+                    })
+                    .catch(err => {
+                        console.log('Что-то пошло не так', err);
+                    })
+                });
+            </script>
+        {% endfor %}
+    {% else %}
+          <h4>У вас еще нет тестов. Давайте создадим!</h4>
+    {% endif %}
+    <a href="/test_constructor" class="btn btn-lg btn-secondary mt-4">Создать тест</a>
 {% endblock %}

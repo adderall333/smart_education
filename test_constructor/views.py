@@ -100,3 +100,18 @@ def delete(request):
         return HttpResponseRedirect("/test_constructor/test/?code={0}".format(code))
     except Question.DoesNotExist:
         return HttpResponseNotFound("<h2>Question not found</h2>")
+
+
+def delete_test(request):
+    try:
+        code = request.GET.get("code")
+        test = Test.objects.get(code=code)
+        questions = Question.objects.filter(test_code=code)
+        for question in questions:
+            question.delete()
+        test.delete()
+        return HttpResponseRedirect("/accounts/home/")
+    except Question.DoesNotExist:
+        return HttpResponseNotFound("<h2>Question not found</h2>")
+    except Test.DoesNotExist:
+        return HttpResponseNotFound("<h2>Test not found</h2>")
