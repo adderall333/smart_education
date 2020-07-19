@@ -8,14 +8,23 @@
 <h2>Ваши тесты:</h2>
 {% if tests %}
     {% for test in tests %}
-        {{ test.title }}<br/>
-        <form>
-        <a href="../../new_test/edit">редактировать</a>
-        <a href="new_test/delete">удалить</a><br/>
-        </form>
+<div class="mt-1">
+    <h3>{{ test.title }}</h3>
+       <form action="/test_constructor/new_test/edit">
+	<button class="btn btn-sm btn-secondary" type="submit">редактировать</button>
+ <form action="/test_constructor/new_test/delete">
+	<button class="btn btn-sm btn-secondary" type="submit">удалить</button>
+    <form action="/test_constructor/new_test/code">
+	<button class="btn btn-sm btn-secondary" type="submit">получить код</button>
+        <form action="/test_constructor/new_test/result">
+	<button class="btn btn-sm btn-secondary" type="submit">посмотреть результаты</button>
+        </form>  </form>  </form> </form>
+    </div>
     {% endfor %}
 {% else %}
       <h4>У вас еще нет тестов. Давайте создадим</h4>
 {% endif %}
-<a href="/test_constructor">Создать тест</a>
+<form action="/test_constructor">
+	<button class="btn btn-lg btn-secondary mt-3" type="submit">Создать тест</button>
+</form>
 {% endblock %}
