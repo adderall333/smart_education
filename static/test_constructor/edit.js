@@ -1,4 +1,9 @@
+var k = document.getElementById('form').getAttribute('info');
+
 var x = 0;
+for (let i = 0; i < k; i++){
+    addInput();
+}
 
 function addInput() {
 	if (x < 20) {

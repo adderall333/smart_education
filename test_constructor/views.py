@@ -32,7 +32,6 @@ def add_question(request):
         test = request.GET.get("test")
         question.test_title = test
         question.id = request.GET.get("id")
-        question.options_count = request.POST.get("options_count")
         question.text = request.POST.get("text")
         question.image = request.POST.get("image")
         question.save()
@@ -41,7 +40,7 @@ def add_question(request):
                 option = Option()
                 option.text = request.POST.get("option" + str(i + 1))
                 option.question = question
-                option.is_correct = True #request.POST.get("correct" + str(i + 1))
+                option.is_correct = request.POST.get("correct" + str(i + 1)) == "on"
                 option.save()
             except:
                 break
@@ -52,18 +51,34 @@ def edit(request):
     try:
         id = request.GET.get("id")
         question = Question.objects.get(id=id)
+        options = question.option_set.all()
 
         if request.method == "POST":
             test = request.GET.get("test")
-            question.options_count = request.POST.get("options_count")
             question.text = request.POST.get("text")
             question.image = request.POST.get("image")
-            question.options = request.POST.get("options")
-            question.correct_answer = request.POST.get("correct_answer")
             question.save()
+            i = 0
+            for option in options:
+                try:
+                    option.text = request.POST.get("option" + str(i + 1))
+                    option.is_correct = request.POST.get("correct" + str(i + 1)) == "on"
+                    option.save()
+                    i += 1
+                except:
+                    break
+            for j in range(i, 20 - options.count()):
+                try:
+                    option = Option()
+                    option.text = request.POST.get("option" + str(j + 1))
+                    option.question = question
+                    option.is_correct = request.POST.get("correct" + str(j + 1)) == "on"
+                    option.save()
+                except:
+                    break
             return HttpResponseRedirect("/test_constructor/new_test/?test={0}".format(test))
         else:
-            return render(request, "test_constructor/edit.html", {"question": question})
+            return render(request, "test_constructor/edit.html", {"question": question, "options": options})
     except Question.DoesNotExist:
         return HttpResponseNotFound("<h2>Question not found</h2>")
 

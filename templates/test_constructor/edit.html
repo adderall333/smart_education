@@ -1,4 +1,5 @@
 <!doctype html>
+{% load static %}
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -8,29 +9,31 @@
     <title>Test constructor</title>
 </head>
 <body>
-    <form method="POST">
+    <form method="POST" id="form" info="{{ options.count }}">
         {% csrf_token %}
-        <p>
-            <label>Количество вариантов ответа</label>
-            <input type="number" name="options_count" value="{{question.options_count}}" min="0" max="20" required>
-        </p>
-        <p>
+        <div>
             <label>Текст вопроса</label>
-            <textarea name="text" cols="40" rows="10" required>{{question.text}}</textarea>
-        </p>
-        <p>
+            <textarea name="text" required>{{ question.text }}</textarea>
+        </div>
+        <div>
             <label>Картинка</label>
-            <input type="file" name="image" accept="image/*" value="{{question.image}}">
-        </p>
-        <p>
-            <label>Варианты ответа</label>
-            <textarea name="options" cols="40" rows="10">{{question.options}}</textarea>
-        </p>
-        <p>
-            <label>Правильный ответ</label>
-            <input type="text" name="correct_answer" value="{{question.correct_answer}}" required>
-        </p>
+            <input type="file" name="image" accept="image/*">
+        </div><label>Варианты ответа</label>
+        <div id="input0"></div>
+        <button type="button" onclick="addInput()">+</button>
+        <button type="button" onclick="removeInput()">-</button>
         <input type="submit" value="Изменить вопрос">
     </form>
+<script type="text/javascript" src={% static "test_constructor/edit.js" %}></script>
+<script>
+    var i = 1;
+    {% for option in options %}
+        document.getElementsByName('option' + i)[0].setAttribute("value", "{{option.text}}")
+        {% if option.is_correct %}
+            document.getElementsByName('correct' + i)[0].setAttribute("checked", "checked")
+        {% endif %}
+        i++;
+    {% endfor %}
+</script>
 </body>
 </html>
