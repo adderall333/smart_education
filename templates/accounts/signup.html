@@ -1,9 +1,19 @@
-{% extends 'accounts/menu_base.html' %}
-
-{% block content2 %}
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Зарегистриоваться</button>
-</form>
-{% endblock content2%}
+{% extends 'main/base.html' %}
+{% block navlinks %}
+    {% if user.is_authenticated %}
+        <a class="nav-link" href="/accounts/home">Личный кабинет</a>
+    {% else %}
+        <a class="nav-link" href="/accounts/login">Вход</a>
+        <a class="nav-link" href="/accounts/signup">Регистрация</a>
+    {% endif %}
+{% endblock %}
+{% block maincontent %}
+ <div>
+    <h1 class="cover-heading">Регистрация</h1>
+    <form method="post"> {% csrf_token %}
+      {{ form.as_p }}
+      <!--<button type="submit">Зарегистрироваться</button>-->
+      <button class="btn btn-lg btn-secondary" type="submit">Зарегистрироваться</button>
+    </form>
+  </div>
+{% endblock %}

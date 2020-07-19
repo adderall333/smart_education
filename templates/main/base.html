@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Главная страница</title>
+    <title>{% block title %}{% endblock %}</title>
     <!-- Bootstrap core CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <style>
@@ -14,7 +14,6 @@
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
-         margin-top:300px;
       }
 
       @media (min-width: 768px) {
@@ -34,14 +33,16 @@
         <div class="inner">
           <h3 class="masthead-brand">T&D</h3>
             <nav class="nav nav-masthead justify-content-center">
-              <a class="nav-link active" href="/">Главная страница</a>
-                {% block content1 %}
-                {% endblock content1 %}
+             <a class="nav-link active" href="/">Главная страница</a>
+              {% block navlinks %}{% endblock %}
             </nav>
         </div>
       </header>
-        {% block content2 %}
-        {% endblock content2 %}
+
+      <main role="main" class="inner cover">
+        {% block maincontent%}{% endblock %}
+      </main>
+
       <footer class="mastfoot mt-auto">
         <div class="inner">
           <p>Тестовый вариант.</p>
