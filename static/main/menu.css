@@ -24,6 +24,7 @@ a:hover {
  * Base structure
  */
 
+
 html,
 body {
   height: 100%;
@@ -39,7 +40,7 @@ body {
 }
 
 .cover-container {
-  max-width: 42em;
+  max-width: 52em;
 }
 
 
@@ -109,4 +110,22 @@ body {
 .cover-heading {
   color: #fff;
   padding: 0.65rem;
+}
+
+
+table.test  { /* Таблица */
+  width: 100%;
+  border: 4px;
+  border-collapse: separate;
+  border-spacing: 4px 7px;
+}
+td.rightcol { /* Правая ячейка */
+  width: 65%;
+  vertical-align: center;
+  text-align: left;
+}
+td.leftcol { /* Левая ячейка */
+  width: 35%;
+  vertical-align: center;
+  text-align: left;
 }
