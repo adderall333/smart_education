@@ -1,18 +1,21 @@
-<!doctype html>
-<html lang=ru>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Test constructor</title>
-</head>
-<body>
+{% extends 'main/base.html' %}
+
+{% block title %}
+Создать новый тест
+{% endblock %}
+
+{% block navlinks %}
+  <a class="nav-link" href="/">Главная страница</a>
+  <a class="nav-link" href="/accounts/home">Личный кабинет</a>
+  <a class="nav-link" href="{% url 'logout'%}">Выйти</a>
+{% endblock %}
+
+{% block maincontent %}
+  <div>
     <form method="POST" action="add_test/">
         {% csrf_token %}
-        <label>Название теста</label>
-        <input type="text" name="title">
-        <input type="submit" value="Создать новый тест">
+        <input class="form-control form-control-lg mb-3 mr-sm-3" type="text" name="title" placeholder="Введите название теста">
+        <input class="btn btn-lg btn-secondary" type="submit" value="Создать">
     </form>
-</body>
-</html>
+  </div>
+{% endblock %}
