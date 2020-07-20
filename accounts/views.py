@@ -11,7 +11,10 @@ def results(request):
     code = request.GET.get("code")
     test_result = TestResult.objects.get(test_code=code)
     questions_results = QuestionResult.object.filter(test_result=test_result)
-    return render('accounts/results.html', {"test": test_result, "questions": questions_results})
+    return render('accounts/results.html',
+                  {"test": test_result,
+                   "questions": questions_results,
+                   "test_title": Test.objects.get(code=code).title})
 
 
 class SignUpView(generic.CreateView):
