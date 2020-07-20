@@ -23,31 +23,33 @@
                     <td class="rightcol">
                         <a href="/test_constructor/test/?code={{test.code}}" class="btn btn-sm btn-secondary mt-1 mb-1">Редактировать</a>
                         <a href="/test_constructor/delete_test/?code={{test.code}}" class="btn btn-sm btn-secondary mt-1 mb-1">Удалить</a>
-                        <a href="#" name="code_btn" class="btn btn-sm btn-secondary mt-1 mb-1">Получить код</a>
+                        <a href="#" name="code_btn" code="{{test.code}}" class="btn btn-sm btn-secondary mt-1 mb-1">Получить код</a>
                         <a href="#" class="btn btn-sm btn-secondary mt-1 mb-1">Просмотреть результаты</a>
                     </td>
                 </tr>
             </table>
-            <script>
-                const btn = document.getElementsByName("code_btn")[0];
-                var code = {{test.code}};
-                btn.addEventListener('click', () => {
-                    navigator.clipboard.writeText(code)
-                    .then(() => {
-                        if (btn.innerText !== 'Скопировано') {
-                            const originalText = btn.innerText;
-                            btn.innerText = "Скопировано"
-                            setTimeout(() => {
-                                btn.innerText = originalText;
-                            }, 1500);
-                        }
-                    })
-                    .catch(err => {
-                        console.log('Что-то пошло не так', err);
-                    })
-                });
-            </script>
         {% endfor %}
+        <script>
+                const buttons = document.getElementsByName("code_btn");
+                for(let i = 0; i < buttons.length; i++) {
+                    buttons[i].addEventListener('click', () => {
+                        navigator.clipboard.writeText(buttons[i].getAttribute("code"))
+                        .then(() => {
+
+                            if (buttons[i].innerText !== 'Скопировано') {
+                                const originalText = buttons[i].innerText;
+                                buttons[i].innerText = "Скопировано"
+                                setTimeout(() => {
+                                    buttons[i].innerText = originalText;
+                                }, 1500);
+                            }
+                        })
+                        .catch(err => {
+                            console.log('Что-то пошло не так', err);
+                        })
+                    });
+                }
+            </script>
     {% else %}
           <h4>У вас еще нет тестов. Давайте создадим!</h4>
     {% endif %}
