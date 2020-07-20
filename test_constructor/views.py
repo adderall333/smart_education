@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.http import HttpResponseNotFound
+from django.http import HttpResponse
 from .models import Test, Question, Option
 import datetime
 import random
@@ -27,6 +28,10 @@ def add_test(request):
 
 def new_test(request):
     code = request.GET.get("code")
+
+    if Test.objects.get(code=code).author != request.user:
+        return HttpResponse("<h2>У вас нет доступа к этому тесту</h2>")
+
     questions = Question.objects.filter(test_code=code)
     return render(request, "test_constructor/testConstructor.html",
                   {"questions": questions, "code": code})
@@ -36,6 +41,10 @@ def add_question(request):
     if request.method == "POST":
         question = Question()
         code = request.GET.get("code")
+
+        if Test.objects.get(code=code).author != request.user:
+            return HttpResponse("<h2>У вас нет доступа к этому тесту</h2>")
+
         question.test_code = code
         question.id = request.GET.get("id")
         question.text = request.POST.get("text")
@@ -56,12 +65,16 @@ def add_question(request):
 
 def edit(request):
     try:
+        code = request.GET.get("code")
+
+        if Test.objects.get(code=code).author != request.user:
+            return HttpResponse("<h2>У вас нет доступа к этому тесту</h2>")
+
         id = request.GET.get("id")
         question = Question.objects.get(id=id)
         options = question.option_set.all()
 
         if request.method == "POST":
-            code = request.GET.get("code")
             question.text = request.POST.get("text")
             question.amount_of_points = request.POST.get("amount_of_points")
             question.image = request.POST.get("image")
@@ -95,6 +108,10 @@ def delete(request):
     try:
         id = request.GET.get("id")
         code = request.GET.get("code")
+
+        if Test.objects.get(code=code).author != request.user:
+            return HttpResponse("<h2>У вас нет доступа к этому тесту</h2>")
+
         question = Question.objects.get(id=id)
         question.delete()
         return HttpResponseRedirect("/test_constructor/test/?code={0}".format(code))
@@ -105,6 +122,10 @@ def delete(request):
 def delete_test(request):
     try:
         code = request.GET.get("code")
+
+        if Test.objects.get(code=code).author != request.user:
+            return HttpResponse("<h2>У вас нет доступа к этому тесту</h2>")
+
         test = Test.objects.get(code=code)
         questions = Question.objects.filter(test_code=code)
         for question in questions:
