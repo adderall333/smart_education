@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'main',
     'test_constructor',
+    'testing',
 ]
 
 MIDDLEWARE = [

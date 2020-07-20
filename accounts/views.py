@@ -3,8 +3,15 @@ from .models import MyUserCreationForm
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
-from django.http import Http404
 from test_constructor.models import Test
+from testing.models import TestResult, QuestionResult, OptionResult
+
+
+def results(request):
+    code = request.GET.get("code")
+    test_result = TestResult.objects.get(test_code=code)
+    questions_results = QuestionResult.object.filter(test_result=test_result)
+    return render('accounts/results.html', {"test": test_result, "questions": questions_results})
 
 
 class SignUpView(generic.CreateView):
@@ -32,11 +39,3 @@ class Account:
     def home(self):
         tests = Test.objects.filter(author=self.user)
         return render(self, 'accounts/home.html', {"tests": tests})
-
-    def test(self, test_id):
-        try:
-            test = Test.objects.get(id=test_id)
-        except:
-            raise Http404("Тест не найден")
-
-        return render(self, 'accounts/test.html', {'accounts': test})
