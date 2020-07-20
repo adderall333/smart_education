@@ -6,7 +6,6 @@ from django.contrib import admin
 # Отслеживание url адресов
 # если пользователь перейдет на какую-то страничку, то покажем ему один определенный шаблон
 
-# Лена, убери слэш!!!
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
