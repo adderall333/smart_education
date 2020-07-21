@@ -8,15 +8,14 @@
     <title>Document</title>
 </head>
 <body>
-    <label>Название теста: {{ test_title }}</label>
-    <label>Тестируемый: {{ test.user }}</label>
-    {% for question in questions %}
-        <label>Текст вопроса:</label>
-        {{  }}
-        <label>Ответ:</label>
-        {% if question.text_answer != "" %}
-            {{ question.text_answer }}
-        {% endif %}
+    <p>Название теста: {{ test.title }}</p>
+    <p>Имя тестируемого: {{ test_result.user }}</p>
+    <p>Количество баллов {{ test_result.amount_of_points }}</p>
+    {% for question in questions.values %}
+        <div>
+            <p>Текст вопроса: {{ question.text }}</p>
+            <p>Количество баллов: {{ question.amount_of_points }}</p>
+        </div>
     {% endfor %}
 </body>
 </html>
