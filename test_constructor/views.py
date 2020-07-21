@@ -79,21 +79,17 @@ def edit(request):
             question.amount_of_points = request.POST.get("amount_of_points")
             question.image = request.POST.get("image")
             question.save()
-            i = 0
             for option in options:
                 try:
-                    option.text = request.POST.get("option" + str(i + 1))
-                    option.is_correct = request.POST.get("correct" + str(i + 1)) == "on"
-                    option.save()
-                    i += 1
+                    option.delete()
                 except:
                     break
-            for j in range(i, 20 - options.count()):
+            for i in range(20):
                 try:
                     option = Option()
-                    option.text = request.POST.get("option" + str(j + 1))
+                    option.text = request.POST.get("option" + str(i + 1))
                     option.question = question
-                    option.is_correct = request.POST.get("correct" + str(j + 1)) == "on"
+                    option.is_correct = request.POST.get("correct" + str(i + 1)) == "on"
                     option.save()
                 except:
                     break
