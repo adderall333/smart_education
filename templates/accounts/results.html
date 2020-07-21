@@ -15,7 +15,10 @@
         <div>
             {% if question.option_results.count > 0 %}
                 <p>Текст вопроса: {{ question.text }} ({{ question.earned_points }}/{{ question.amount_of_points }} баллов)</p>
-                {% for option_result in question.option_results %}
+                {% if question.image %}
+                    <p><img src="{{ question.image.url }}" width="350"></p>
+                {% endif %}
+            {% for option_result in question.option_results %}
                     <p>
                         {% if option_result.is_selected %}
                             <input type="checkbox" checked disabled>
@@ -30,6 +33,9 @@
                 {% endfor %}
             {% else %}
                 <p>Текст вопроса: {{ question.text }}</p>
+                {% if question.image %}
+                    <p><img src="{{ question.image.url }}" width="350"></p>
+                {% endif %}
                 <p>Ответ: {{ question.text_answer }}</p>
             {% endif %}
         </div>

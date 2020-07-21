@@ -49,7 +49,7 @@ def add_question(request):
         question.id = request.GET.get("id")
         question.text = request.POST.get("text")
         question.amount_of_points = request.POST.get("amount_of_points")
-        question.image = request.POST.get("image")
+        question.image = request.FILES.get("image")
         question.save()
         for i in range(20):
             try:
@@ -77,7 +77,7 @@ def edit(request):
         if request.method == "POST":
             question.text = request.POST.get("text")
             question.amount_of_points = request.POST.get("amount_of_points")
-            question.image = request.POST.get("image")
+            question.image = request.FILES.get("image")
             question.save()
             for option in options:
                 try:

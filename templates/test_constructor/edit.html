@@ -24,7 +24,7 @@
         </div>
     </header>
     <main role="main" class="inner cover">
-        <form method="POST" id="form" info="{{options.count}}" class="text-left">
+        <form method="POST" enctype="multipart/form-data" id="form" info="{{options.count}}" class="text-left">
             {% csrf_token %}
             <div class="form-group">
                 <label>Текст вопроса</label>
@@ -36,6 +36,9 @@
             </div>
             <div>
                 <label>Картинка</label>
+                {% if question.image %}
+                    <p><img src="{{ question.image.url }}" width="350"></p>
+                {% endif %}
                 <input type="file" name="image" accept="image/*">
             </div>
             <label>Варианты ответа</label>

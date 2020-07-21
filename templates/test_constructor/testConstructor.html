@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block maincontent %}
-  <form method="POST" action="/test_constructor/add_question/?code={{code}}" class="text-left">
+  <form method="POST" enctype="multipart/form-data" action="/test_constructor/add_question/?code={{code}}" class="text-left">
         {% csrf_token %}
         <div class="form-group">
             <label for="textarea1">Текст вопроса</label>
