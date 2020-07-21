@@ -1,9 +1,11 @@
 from django.contrib.auth import authenticate, login
-from .models import MyUserCreationForm
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.http import HttpResponse
+from django.core.exceptions import PermissionDenied
+
+from .models import MyUserCreationForm
 from test_constructor.models import Test, Question
 from testing.models import TestResult, QuestionResult, OptionResult
 
@@ -12,7 +14,7 @@ def all_results(request):
     code = request.GET.get("code")
 
     if Test.objects.get(code=code).author != request.user:
-        return HttpResponse("<h2>У вас нет доступа к этому тесту</h2>")
+        raise PermissionDenied
 
     test_results = TestResult.objects.filter(test=Test.objects.get(code=code))
     return render(request, 'accounts/all_results.html', {"test_results": test_results})
@@ -22,7 +24,7 @@ def results(request):
     code = request.GET.get("code")
 
     if Test.objects.get(code=code).author != request.user:
-        return HttpResponse("<h2>У вас нет доступа к этому тесту</h2>")
+        raise PermissionDenied
 
     test = Test.objects.get(code=code)
     user = request.GET.get("user")

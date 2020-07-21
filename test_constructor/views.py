@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.http import HttpResponseNotFound
-from django.http import HttpResponse
+from django.core.exceptions import PermissionDenied
 from .models import Test, Question, Option
+
 import datetime
 import random
 
@@ -30,7 +31,7 @@ def new_test(request):
     code = request.GET.get("code")
 
     if Test.objects.get(code=code).author != request.user:
-        return HttpResponse("<h2>У вас нет доступа к этому тесту</h2>")
+        raise PermissionDenied
 
     questions = Question.objects.filter(test_code=code)
     return render(request, "test_constructor/testConstructor.html",
@@ -43,7 +44,7 @@ def add_question(request):
         code = request.GET.get("code")
 
         if Test.objects.get(code=code).author != request.user:
-            return HttpResponse("<h2>У вас нет доступа к этому тесту</h2>")
+            raise PermissionDenied
 
         question.test_code = code
         question.id = request.GET.get("id")
@@ -68,7 +69,7 @@ def edit(request):
         code = request.GET.get("code")
 
         if Test.objects.get(code=code).author != request.user:
-            return HttpResponse("<h2>У вас нет доступа к этому тесту</h2>")
+            raise PermissionDenied
 
         id = request.GET.get("id")
         question = Question.objects.get(id=id)
@@ -77,7 +78,8 @@ def edit(request):
         if request.method == "POST":
             question.text = request.POST.get("text")
             question.amount_of_points = request.POST.get("amount_of_points")
-            question.image = request.FILES.get("image")
+            if request.FILES.get("image"):
+                question.image = request.FILES.get("image")
             question.save()
             for option in options:
                 try:
@@ -106,7 +108,7 @@ def delete(request):
         code = request.GET.get("code")
 
         if Test.objects.get(code=code).author != request.user:
-            return HttpResponse("<h2>У вас нет доступа к этому тесту</h2>")
+            raise PermissionDenied
 
         question = Question.objects.get(id=id)
         question.delete()
@@ -120,7 +122,7 @@ def delete_test(request):
         code = request.GET.get("code")
 
         if Test.objects.get(code=code).author != request.user:
-            return HttpResponse("<h2>У вас нет доступа к этому тесту</h2>")
+            raise PermissionDenied
 
         test = Test.objects.get(code=code)
         questions = Question.objects.filter(test_code=code)

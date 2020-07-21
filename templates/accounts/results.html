@@ -18,7 +18,7 @@
                 {% if question.image %}
                     <p><img src="{{ question.image.url }}" width="350"></p>
                 {% endif %}
-            {% for option_result in question.option_results %}
+                {% for option_result in question.option_results %}
                     <p>
                         {% if option_result.is_selected %}
                             <input type="checkbox" checked disabled>
