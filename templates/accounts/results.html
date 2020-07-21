@@ -13,8 +13,25 @@
     <p>Количество баллов {{ test_result.amount_of_points }}</p>
     {% for question in questions.values %}
         <div>
-            <p>Текст вопроса: {{ question.text }}</p>
-            <p>Количество баллов: {{ question.amount_of_points }}</p>
+            {% if question.option_results.count > 0 %}
+                <p>Текст вопроса: {{ question.text }} ({{ question.earned_points }}/{{ question.amount_of_points }} баллов)</p>
+                {% for option_result in question.option_results %}
+                    <p>
+                        {% if option_result.is_selected %}
+                            <input type="checkbox" checked disabled>
+                        {% else %}
+                            <input type="checkbox" disabled>
+                        {% endif %}
+                        <label>{{ option_result.option.text }}</label>
+                        {% if option_result.option.is_correct %}
+                            <label>(правильный ответ)</label>
+                        {% endif %}
+                    </p>
+                {% endfor %}
+            {% else %}
+                <p>Текст вопроса: {{ question.text }}</p>
+                <p>Ответ: {{ question.text_answer }}</p>
+            {% endif %}
         </div>
     {% endfor %}
 </body>

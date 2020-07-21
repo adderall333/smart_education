@@ -27,13 +27,18 @@ def results(request):
     test = Test.objects.get(code=code)
     user = request.GET.get("user")
     test_result = TestResult.objects.filter(test=test).get(user=user)
+    question_results = test_result.questionresult_set.all()
     questions = {}
     i = 0
     for question in Question.objects.filter(test_code=code):
+        question_result = question_results.get(question=question)
+        option_results = question_result.optionresult_set.all()
         d = {"text": question.text,
              "image": question.image,
              "amount_of_points": question.amount_of_points,
-             "options": question.option_set.all()}
+             "option_results": option_results,
+             "text_answer": question_result.text_answer,
+             "earned_points": question_result.amount_of_points}
         questions[i] = d
         i += 1
     data = {"test_result": test_result, "test": test, "questions": questions}
