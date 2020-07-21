@@ -1,44 +1,57 @@
-<!doctype html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <p>Название теста: {{ test.title }}</p>
-    <p>Имя тестируемого: {{ test_result.user }}</p>
-    <p>Количество баллов {{ test_result.amount_of_points }}</p>
-    {% for question in questions.values %}
-        <div>
-            {% if question.option_results.count > 0 %}
-                <p>Текст вопроса: {{ question.text }} ({{ question.earned_points }}/{{ question.amount_of_points }} баллов)</p>
-                {% if question.image %}
-                    <p><img src="{{ question.image.url }}" width="350"></p>
-                {% endif %}
-            {% for option_result in question.option_results %}
-                    <p>
-                        {% if option_result.is_selected %}
-                            <input type="checkbox" checked disabled>
-                        {% else %}
-                            <input type="checkbox" disabled>
-                        {% endif %}
-                        <label>{{ option_result.option.text }}</label>
-                        {% if option_result.option.is_correct %}
-                            <label>(правильный ответ)</label>
-                        {% endif %}
-                    </p>
-                {% endfor %}
-            {% else %}
+{% extends 'main/base.html' %}
+
+{% block title %}
+Результаты тесты
+{% endblock %}
+
+{% block navlinks %}
+    <a class="nav-link" href="/">Главная страница</a>
+    <a class="nav-link" href="/accounts/home">Личный кабинет</a>
+    <a class="nav-link" href="{% url 'logout'%}">Выйти</a>
+{% endblock %}
+
+{% block maincontent %}
+    <div class="text-left mb-3 mt-3">
+        <h5>Название теста: {{ test.title }}</h5>
+        <h5>Имя тестируемого: {{ test_result.user }}</h5>
+        <h5>Количество набранных баллов: {{ test_result.amount_of_points }}</h5>
+    </div>
+    <table class="table table-bordered table-dark">
+        <thead><th>Cписок вопросов</th></thead>
+        {% for question in questions.values %}
+        <tr>
+        <td>
+            <div class="text-left">
+                {% if question.option_results.count > 0 %}
+                <p>({{ question.earned_points }}/{{ question.amount_of_points }} баллов)</p>
                 <p>Текст вопроса: {{ question.text }}</p>
                 {% if question.image %}
-                    <p><img src="{{ question.image.url }}" width="350"></p>
+                <p><img src="{{ question.image.url }}" width="350"></p>
+                {% endif %}
+                {% for option_result in question.option_results %}
+                <p>
+                    {% if option_result.is_selected %}
+                    <input type="checkbox" checked disabled>
+                    {% else %}
+                    <input type="checkbox" disabled>
+                    {% endif %}
+                    <label>{{ option_result.option.text }}</label>
+                    {% if option_result.option.is_correct %}
+                    <label>(правильный ответ)</label>
+                    {% endif %}
+                </p>
+                {% endfor %}
+                {% else %}
+                <p>Текст вопроса: {{ question.text }}</p>
+                {% if question.image %}
+                <p><img src="{{ question.image.url }}" width="350"></p>
                 {% endif %}
                 <p>Ответ: {{ question.text_answer }}</p>
-            {% endif %}
-        </div>
-    {% endfor %}
-</body>
-</html>
+                {% endif %}
+            </div>
+        </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

@@ -1,24 +1,29 @@
-<!doctype html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <p>Название теста: {{ test_results.first.test.title }}</p>
-    <table>
+{% extends 'main/base.html' %}
+
+{% block title %}
+Результаты тесты
+{% endblock %}
+
+{% block navlinks %}
+    <a class="nav-link" href="/">Главная страница</a>
+    <a class="nav-link" href="/accounts/home">Личный кабинет</a>
+    <a class="nav-link" href="{% url 'logout'%}">Выйти</a>
+{% endblock %}
+
+{% block maincontent %}
+    {% if test_results %}
+    <h3 class="text-left mt-3 mb-3">Название теста: {{ test_results.first.test.title }}</h3>
+    <table class="table table-bordered table-dark">
         <thead><th>Имя тестируемого</th><th>Количество баллов</th><th>Результаты</th></thead>
         <tr>
             {% for test_result in test_results %}
-            <td>{{ test_result.user }}</td>
+            <td class="text-left">{{ test_result.user }}</td>
             <td>{{ test_result.amount_of_points }}</td>
             <td><a href="/accounts/results/?code={{ test_result.test.code }}&user={{ test_result.user }}">Посмотреть</a></td>
             {% endfor %}
         </tr>
     </table>
-
-</body>
-</html>
+    {% else %}
+    <h2>Этот тест ещё никто не прошёл</h2>
+    {% endif %}
+{% endblock %}
