@@ -7,18 +7,15 @@ from test_constructor.models import Test, Question, Option
 def enter_code(request):
     return render(request, 'testing/codeEntering.html')
 
-def enter_code_again(request):
-    return render(request, 'testing/wrongCodeEntering.html')
-
 
 def open_test(request):
     if request.method == "POST":
 
-        enteredCode = request.POST.get("code")
-        if Test.objects.filter(code=enteredCode).count() == 1:
+        entered_code = request.POST.get("code")
+        if Test.objects.filter(code=entered_code).count() == 1:
 
             test = Test()
-            test.code = enteredCode
+            test.code = entered_code
             return HttpResponseRedirect("/testing/run_test/?code={0}".format(test.code))
         else:
             return render(request, 'testing/wrongCodeEntering.html')
@@ -26,18 +23,67 @@ def open_test(request):
 
 def run_test(request):
     code = request.GET.get("code")
-    questions = Question.objects.filter(test_code=56317311)
-    string = " 123"
-    string2 = ""
-    for question in questions:
-        string111 = question.text
-
+    questions = {}
+    i = 0
+    for question in Question.objects.filter(test_code=code):
         options = question.option_set.filter(question=question)
-        i = 2
-        string = ["","","","",""]
-        for option in options:
-            string[i] = option.text
-            i = i + 1
+        true_answers = 0
+        for option in question.option_set.all():
+            if option.is_correct:
+                true_answers += 1
 
-    data = {"question_text": string111, "option1": string[2], "option2": string[3], "option3": string[4]}
+        if options.count() == 0:
+            type = 1
+        elif true_answers == 1:
+            type = 2
+        else:
+            type = 3
+        if question.image:
+            has_image = 0
+        else:
+            has_image = 1
+        d = {"text": question.text,
+             "image": question.image,
+             "amount_of_points": question.amount_of_points,
+             "options": options,
+             "question_type": type,
+             "has_image": has_image,
+             "image": question.image}
+        questions[i] = d
+        i += 1
+    data = {"questions": questions}
+
     return  render(request, "testing/testRunner.html", context=data)
+
+
+#{{ value|linebreaksbr }}
+
+
+
+
+# string = " 123"
+# string2 = ""
+# for question in questions:
+#     string111 = question.text
+#
+#     options = question.option_set.filter(question=question)
+#     i = 2
+#     string = ["","","","",""]
+#     for option in options:
+#         string[i] = option.text
+#         i = i + 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
