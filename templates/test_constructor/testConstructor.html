@@ -56,7 +56,7 @@
         <tr>
             <td class="text-left">{{ question.text }}</td>
             <td>{{ question.amount_of_points }}</td>
-            <td><a href="edit/?code={{code}}&id={{question.id}}">Изменить</a> <a href="delete/?code={{code}}&id={{question.id}}">Удалить</a></td>
+            <td><a href="edit/?code={{code}}&id={{question.id}}">Изменить</a> <a href="delete/?code={{code}}&id={{question.id}}" onclick="return deleteQuestion()">Удалить</a></td>
         </tr>
         {% endfor %}
     </table>
