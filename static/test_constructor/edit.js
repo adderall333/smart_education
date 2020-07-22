@@ -7,7 +7,7 @@ for (let i = 0; i < k; i++){
 
 function addInput() {
 	if (x < 20) {
-    var str = '<input name="option' + (x + 1) + '" type="text"><input name="correct' + (x + 1) +'" type="checkbox"><div id="input' + (x + 1) + '"></div>';
+    var str = '<input autocomplete="off" name="option' + (x + 1) + '" type="text"><input name="correct' + (x + 1) +'" type="checkbox"><div id="input' + (x + 1) + '"></div>';
     document.getElementById('input' + x).innerHTML = str;
     x++;
   } else

@@ -28,7 +28,7 @@
             {% csrf_token %}
             <div class="form-group">
                 <label>Текст вопроса</label>
-                <textarea class="form-control" name="text" required>{{ question.text }}</textarea>
+                <textarea autocomplete="off" class="form-control" name="text" required>{{ question.text }}</textarea>
             </div>
             <div>
                 <label>Стоимость вопроса</label>
