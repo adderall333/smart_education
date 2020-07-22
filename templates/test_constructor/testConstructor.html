@@ -16,7 +16,17 @@
 {% endblock %}
 
 {% block maincontent %}
-  <form method="POST" enctype="multipart/form-data" action="/test_constructor/add_question/?code={{code}}" class="text-left">
+{% if already_used %}
+    <script>
+        if (confirm("Этот тест уже кто-то проходил. Его изменение вызовет ошибку. Хотите сохранить измененный тест как новый?")) {
+            location.assign("/test_constructor/save_as_new/?code={{ code }}");
+        }
+        else {
+            location.assign("/accounts/home");
+        }
+    </script>
+{% else %}
+    <form method="POST" enctype="multipart/form-data" action="/test_constructor/add_question/?code={{code}}" class="text-left">
         {% csrf_token %}
         <div class="form-group">
             <label for="textarea1">Текст вопроса</label>
@@ -62,4 +72,5 @@
     </table>
     </div>
     {% endif %}
+{% endif %}
 {% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Создать новый тест
+{% endblock %}
+
+{% block navlinks %}
+  <a class="nav-link" href="/">Главная страница</a>
+  <a class="nav-link" href="/accounts/home">Личный кабинет</a>
+  <a class="nav-link" href="{% url 'logout'%}">Выйти</a>
+{% endblock %}
+
+{% block maincontent %}
+  <div>
+    <form method="POST" action="/test_constructor/save_test/?code={{ code }}">
+        {% csrf_token %}
+        <input class="form-control form-control-lg mb-3 mr-sm-3" type="text" name="title" placeholder="Введите новое название теста">
+        <input class="btn btn-lg btn-secondary" type="submit" value="Создать">
+    </form>
+  </div>
+{% endblock %}

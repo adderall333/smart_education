@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.http import HttpResponseNotFound
 from django.core.exceptions import PermissionDenied
 from .models import Test, Question, Option
+from testing.models import TestResult
 
 import datetime
 import random
@@ -10,6 +11,11 @@ import random
 
 def index(request):
     return render(request, 'test_constructor/index.html')
+
+
+def save_as_new(request):
+    code = request.GET.get("code")
+    return render(request, "test_constructor/saveAsNew.html", {"code": code})
 
 
 def add_test(request):
@@ -27,15 +33,49 @@ def add_test(request):
         return HttpResponseRedirect("/test_constructor/test/?code={0}".format(test.code))
 
 
+def save_test(request):
+    if request.method == "POST":
+        test = Test()
+        test.title = request.POST.get("title")
+        test.author = request.user
+        test.pub_date = datetime.datetime.now()
+        while True:
+            code = random.randint(10000000, 99999999)
+            if Test.objects.filter(code=code).count() == 0:
+                test.code = code
+                break
+        test.save()
+        previous_code = request.GET.get("code")
+        previous_questions = Question.objects.filter(test_code=previous_code)
+        for previous_question in previous_questions:
+            question = Question()
+            question.test_code = test.code
+            question.text = previous_question.text
+            question.image = previous_question.image
+            question.amount_of_points = previous_question.amount_of_points
+            question.save()
+            previous_options = previous_question.option_set.all()
+            for previous_option in previous_options:
+                option = Option()
+                option.question = question
+                option.text = previous_option.text
+                option.is_correct = previous_option.is_correct
+                option.save()
+        return HttpResponseRedirect("/test_constructor/test/?code={0}".format(test.code))
+
+
 def new_test(request):
     code = request.GET.get("code")
 
     if Test.objects.get(code=code).author != request.user:
         raise PermissionDenied
 
-    questions = Question.objects.filter(test_code=code)
-    return render(request, "test_constructor/testConstructor.html",
-                  {"questions": questions, "code": code})
+    if Test.objects.get(code=code).testresult_set.all().count() == 0:
+        questions = Question.objects.filter(test_code=code)
+        return render(request, "test_constructor/testConstructor.html",
+                      {"questions": questions, "code": code, "already_used": False})
+    else:
+        return render(request, "test_constructor/testConstructor.html", {"code": code, "already_used": True})
 
 
 def add_question(request):

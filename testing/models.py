@@ -15,7 +15,7 @@ class TestResult(models.Model):
 class QuestionResult(models.Model):
     test_result = models.ForeignKey(TestResult, default=None, on_delete=models.CASCADE, null=True)
     question = models.ForeignKey(Question, default=None, on_delete=models.CASCADE, null=True)
-    text_answer = models.CharField(max_length=200, default="", null=True)
+    text_answer = models.CharField(max_length=200, default="", null=True, blank=True)
     amount_of_points = models.IntegerField(default=0)
 
     class Meta:
