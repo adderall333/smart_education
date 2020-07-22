@@ -26,7 +26,7 @@ a:hover {
 
 html,
 body {
-  height: 100%;
+  height: auto;
   background-color: #333;
 }
 
@@ -39,7 +39,8 @@ body {
 }
 
 .cover-container {
-  max-width: 42em;
+  min-height: 100vh;
+  max-width: 52em;
 }
 
 
@@ -104,9 +105,32 @@ body {
  */
 .mastfoot {
   color: rgba(255, 255, 255, .5);
+  height: 50px;
 }
 
 .cover-heading {
   color: #fff;
   padding: 0.65rem;
+}
+
+
+table.test  { /* Таблица */
+  width: 100%;
+  border: 4px;
+  border-collapse: separate;
+  border-spacing: 4px 7px;
+}
+td.rightcol { /* Правая ячейка */
+  width: 65%;
+  vertical-align: center;
+  text-align: left;
+}
+td.leftcol { /* Левая ячейка */
+  width: 35%;
+  vertical-align: center;
+  text-align: left;
+}
+
+.div-center {
+  margin:20px auto;
 }
