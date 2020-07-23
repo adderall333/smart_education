@@ -27,15 +27,15 @@
         <form method="POST" enctype="multipart/form-data" id="form" info="{{options.count}}" class="text-left">
             {% csrf_token %}
             <div class="form-group">
-                <label>Текст вопроса</label>
-                <textarea class="form-control" name="text" required>{{ question.text }}</textarea>
+                <label>Текст вопроса:</label>
+                <textarea autocomplete="off" class="form-control" name="text" required>{{ question.text }}</textarea>
             </div>
             <div>
-                <label>Стоимость вопроса</label>
+                <label>Стоимость вопроса:</label>
                 <input type="number" name="amount_of_points" value="{{question.amount_of_points}}" required>
             </div>
             <div>
-                <label>Картинка</label>
+                <label>Изображение:</label>
                 {% if question.image %}
                     <p><img src="{{ question.image.url }}" width="350"></p>
                 {% endif %}

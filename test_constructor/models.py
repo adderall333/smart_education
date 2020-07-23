@@ -22,8 +22,11 @@ class Question(models.Model):
     image = models.ImageField()
     amount_of_points = models.IntegerField(default=1)
 
-    #def __delete__(self, instance):
-
+    def delete(self, *args, **kwargs):
+        super(Question, self).delete(*args, **kwargs)
+        if self.image:
+            storage, path = self.image.storage, self.image.path
+            storage.delete(path)
 
     def __str__(self):
         return self.text

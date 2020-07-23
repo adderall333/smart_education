@@ -31,13 +31,22 @@
                 {% for option_result in question.option_results %}
                 <p>
                     {% if option_result.is_selected %}
-                    <input type="checkbox" checked disabled>
-                    {% else %}
-                    <input type="checkbox" disabled>
-                    {% endif %}
+                    <input class="custom-checkbox" type="checkbox" checked disabled>
                     <label>{{ option_result.option.text }}</label>
-                    {% if option_result.option.is_correct %}
-                    <label>(правильный ответ)</label>
+                    {% else %}
+                    <input class="custom-checkbox" type="checkbox" disabled>
+                    <label>{{ option_result.option.text }}</label>
+                    {% endif %}
+                    {% if option_result.is_selected %}
+                        {% if option_result.option.is_correct %}
+                            <label>(правильный ответ)</label>
+                        {% else %}
+                            <label>(неправильный ответ)</label>
+                        {% endif %}
+                    {% else %}
+                        {% if option_result.option.is_correct %}
+                            <label>(неправильный ответ)</label>
+                        {% endif %}
                     {% endif %}
                 </p>
                 {% endfor %}

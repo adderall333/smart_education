@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import random
 
 
 def menu(request):
