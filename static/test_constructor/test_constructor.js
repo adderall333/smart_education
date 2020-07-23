@@ -15,3 +15,7 @@ function removeInput() {
     document.getElementById('input' + (x - 1)).innerHTML = ' ';
     x--;
 }
+
+function deleteQuestion() {
+    return confirm("Удалить этот вопрос?");
+}

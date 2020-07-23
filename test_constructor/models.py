@@ -6,7 +6,7 @@ class Test(models.Model):
     title = models.CharField(max_length=100, default="")
     author = models.ForeignKey(User, default=None, on_delete=models.CASCADE, null=True)
     pub_date = models.DateTimeField()
-    code = models.IntegerField(default=10000000)
+    code = models.IntegerField(default=10000000, unique=True)
 
     def __str__(self):
         return self.title
@@ -21,6 +21,9 @@ class Question(models.Model):
     text = models.TextField()
     image = models.ImageField()
     amount_of_points = models.IntegerField(default=1)
+
+    #def __delete__(self, instance):
+
 
     def __str__(self):
         return self.text

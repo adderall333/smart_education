@@ -1,6 +1,8 @@
 from django.conf.urls import url
 from django.urls import path, include
 from django.contrib import admin
+from django.conf.urls.static import static
+from . import settings
 
 
 # Отслеживание url адресов
@@ -12,5 +14,6 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('accounts.urls')),
     path('', include('main.urls')),
-    path('test_constructor/', include('test_constructor.urls'))
-]
+    path('test_constructor/', include('test_constructor.urls')),
+    path('testing/', include('testing.urls'))
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

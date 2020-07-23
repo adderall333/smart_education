@@ -22,14 +22,18 @@
                     <td class="leftcol">{{ test.title }}</td>
                     <td class="rightcol">
                         <a href="/test_constructor/test/?code={{test.code}}" class="btn btn-sm btn-secondary mt-1 mb-1">Редактировать</a>
-                        <a href="/test_constructor/delete_test/?code={{test.code}}" class="btn btn-sm btn-secondary mt-1 mb-1">Удалить</a>
-                        <a href="#" name="code_btn" code="{{test.code}}" class="btn btn-sm btn-secondary mt-1 mb-1">Получить код</a>
-                        <a href="#" class="btn btn-sm btn-secondary mt-1 mb-1">Просмотреть результаты</a>
+                        <a href="/test_constructor/delete_test/?code={{test.code}}" onclick="return deleteTest()" class="btn btn-sm btn-secondary mt-1 mb-1">Удалить</a>
+                        <button name="code_btn" code="{{test.code}}" class="btn btn-sm btn-secondary mt-1 mb-1">Получить код</button>
+                        <a href="/accounts/all_results/?code={{test.code}}" class="btn btn-sm btn-secondary mt-1 mb-1">Просмотреть результаты</a>
                     </td>
                 </tr>
             </table>
         {% endfor %}
         <script>
+                function deleteTest() {
+                    return(confirm("Удалить этот тест?"));
+                }
+
                 const buttons = document.getElementsByName("code_btn");
                 for(let i = 0; i < buttons.length; i++) {
                     buttons[i].addEventListener('click', () => {

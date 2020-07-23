@@ -2,43 +2,70 @@
 {% load static %}
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Test constructor</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Изменить вопрос</title>
+    <!-- Bootstrap core CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <!-- Custom styles for this template -->
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'main/style.css' %}">
 </head>
-<body>
-    <form method="POST" id="form" info="{{options.count}}">
-        {% csrf_token %}
-        <div>
-            <label>Текст вопроса</label>
-            <textarea name="text" required>{{ question.text }}</textarea>
+<body class="text-center">
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <header class="masthead mb-auto">
+        <div class="inner">
+            <h3 class="masthead-brand">T&D</h3>
+            <nav class="nav nav-masthead justify-content-center">
+                <a class="nav-link" href="/">Главная страница</a>
+                <a class="nav-link" href="/accounts/home">Личный кабинет</a>
+                <a class="nav-link" href="{% url 'logout'%}">Выйти</a>
+            </nav>
         </div>
-        <div>
-            <label>Стоимость вопроса</label>
-            <input type="number" name="amount_of_points" value="{{question.amount_of_points}}" required>
+    </header>
+    <main role="main" class="inner cover">
+        <form method="POST" enctype="multipart/form-data" id="form" info="{{options.count}}" class="text-left">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Текст вопроса</label>
+                <textarea class="form-control" name="text" required>{{ question.text }}</textarea>
+            </div>
+            <div>
+                <label>Стоимость вопроса</label>
+                <input type="number" name="amount_of_points" value="{{question.amount_of_points}}" required>
+            </div>
+            <div>
+                <label>Картинка</label>
+                {% if question.image %}
+                    <p><img src="{{ question.image.url }}" width="350"></p>
+                {% endif %}
+                <input type="file" name="image" accept="image/*">
+            </div>
+            <label>Варианты ответа</label>
+            <div id="input0"></div>
+            <div class="mt-1">
+                <button class="btn btn-sm btn-secondary" type="button" onclick="addInput()">+</button>
+                <button class="btn btn-sm btn-secondary" type="button" onclick="removeInput()">-</button>
+            </div>
+            <div class="mt-2"><input class="btn btn-secondary" type="submit" value="Изменить вопрос"></div>
+        </form>
+        <script type="text/javascript" src="{% static 'test_constructor/edit.js' %}"></script>
+        <script>
+                var i = 1;
+                {% for option in options %}
+                document.getElementsByName('option' + i)[0].setAttribute("value", "{{option.text}}")
+                {% if option.is_correct %}
+                document.getElementsByName('correct' + i)[0].setAttribute("checked", "checked")
+                {% endif %}
+                i++;
+                {% endfor %}
+        </script>
+    </main>
+    <footer class="mastfoot mt-auto">
+        <div class="inner div-center">
+            <p>Тестовый вариант.</p>
         </div>
-        <div>
-            <label>Картинка</label>
-            <input type="file" name="image" accept="image/*">
-        </div>
-        <label>Варианты ответа</label>
-        <div id="input0"></div>
-        <button type="button" onclick="addInput()">+</button>
-        <button type="button" onclick="removeInput()">-</button>
-        <input type="submit" value="Изменить вопрос">
-    </form>
-<script type="text/javascript" src={% static "test_constructor/edit.js" %}></script>
-<script>
-    var i = 1;
-    {% for option in options %}
-        document.getElementsByName('option' + i)[0].setAttribute("value", "{{option.text}}")
-        {% if option.is_correct %}
-            document.getElementsByName('correct' + i)[0].setAttribute("checked", "checked")
-        {% endif %}
-        i++;
-    {% endfor %}
-</script>
+    </footer>
+</div>
 </body>
 </html>
