@@ -1,36 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <meta charset="utf-8" />
-    <title>Running test</title>
+    <meta charset="UTF-8">
+    <title>Running Test</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
 </head>
 <body>
-    {% for question in questions.values %}
+    <form action="send/{{code}}/{{questions_number}}/" method="post" >
+        {% csrf_token %}
         <div>
-            <p>points: {{ question.amount_of_points }}</p>
-            <h2>{{ question.text }}</h2>
+            <p>Имя</p>
+            <input name= "user_name" type="text">
+            <br />
+            <br />
+        </div>
 
-            {% if question.image %}
-                <p><img src="{{ question.image.url }}" width="350"></p>
-            {% endif%}
+        {% for question in questions.values %}
+            <div>
+                <p>points: {{ question.amount_of_points }}</p>
+                <h2>{{ question.text }}</h2>
 
-            {% if question.question_type == 1 %}
-            <input type="text" name="answer">                     <br />  <br />
-            {% elif question.question_type == 2 %}
+                {% if question.image %}
+                    <p><img src="{{ question.image.url }}" width="350"></p>
+                {% endif%}
+
+                {% if question.question_type == 1 %}
+                    <input type="text" name="answer_{{ question.id }}">
+                    <br />
+                    <br />
+                {% elif question.question_type == 2 %}
 
                     {% for option in question.options %}
-                        <p><input type="radio" name="a" value="1417">   {{ option.text|linebreaksbr }}</p>
+                        <p><input type="radio" name="q_{{ question.id }}">   {{ option.text|linebreaksbr }}</p>
                     {% endfor %}
-                     <br />  <br />
-            {% else %}
+                        <br />
+                        <br />
 
-                {% for option in question.options %}
-                    <p><input type="checkbox" name="a" value="1417">   {{ option.text|linebreaksbr }}</p>
-                {% endfor %}
-                 <br />  <br />
-            {% endif %}
+                {% else %}
+                    {% for option in question.options %}
+                        <p><input type="checkbox" name="q_{{ question.id }}>" value="1417">   {{ option.text|linebreaksbr }}</p>
+                    {% endfor %}
+                    <br />
+                    <br />
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <div>
+            <button type="submit">Отправить</button>
         </div>
-    {% endfor %}
 
+    </form>
 </body>
 </html>
