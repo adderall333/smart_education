@@ -89,13 +89,20 @@ def send_answers(request, code, questions_number):
                 option_results.append(2)
                 option_results[j] = OptionResult()
                 option_results[j].question_result = question_results[i]
-                option_results[j].is_selected = request.POST.get("q_" + str(question_list[i]["id"]))
+                option_results[j].option = question_results[i].question.option_set.get(id=option_list[j]["id"])
+                option_results[j].question_result.save()
+                # option_results[j].is_selected = False
+                # if request.POST.get("q_" + str(option_list[i]["id"])):
+                option_results[j].is_selected = request.POST.get("q_" + str(option_list[j]["id"])) == "on"
+                option_results[j].save()
 
-                if (option_results[j].is_selected != option_list[j]["is_correct"]) or (not option_results[j].is_selected == option_list[j]["is_correct"]):
+                if option_results[j].is_selected != option_list[j]["is_correct"]:
                     question_results[i].amount_of_points = 0
+            question_results[i].save()
             test_result.amount_of_points += question_results[i].amount_of_points
-
-    return HttpResponse("<h2> Вы прошли тест, резы у препода, на главную сами перейдёте </h2> ")
+        test_result.save()
+    return HttpResponse("<h2> Вы прошли тест, резы у препода, на главную сами перейдёте </h2> " +
+                        )
 
 
 

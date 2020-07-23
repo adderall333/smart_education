@@ -31,14 +31,14 @@
                 {% elif question.question_type == 2 %}
 
                     {% for option in question.options %}
-                        <p><input type="radio" name="q_{{ question.id }}">   {{ option.text|linebreaksbr }}</p>
+                        <p><input type="checkbox" name="q_{{ option.id }}" >   {{ option.text|linebreaksbr }}</p>
                     {% endfor %}
                         <br />
                         <br />
 
                 {% else %}
                     {% for option in question.options %}
-                        <p><input type="checkbox" name="q_{{ question.id }}>" value="1417">   {{ option.text|linebreaksbr }}</p>
+                        <p><input type="checkbox" name="q_{{ option.id }}" >   {{ option.text|linebreaksbr }}</p>
                     {% endfor %}
                     <br />
                     <br />
