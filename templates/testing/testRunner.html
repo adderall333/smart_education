@@ -1,36 +1,85 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>Running test</title>
-</head>
-<body>
-    {% for question in questions.values %}
-        <div>
-            <p>points: {{ question.amount_of_points }}</p>
-            <h2>{{ question.text }}</h2>
+{% extends 'main/base.html' %}
 
-            {% if question.image %}
-                <p><img src="{{ question.image.url }}" width="350"></p>
-            {% endif%}
+{% block title %}
+Прохождение теста
+{% endblock %}
 
-            {% if question.question_type == 1 %}
-            <input type="text" name="answer">                     <br />  <br />
-            {% elif question.question_type == 2 %}
+{% block navlinks %}
+  <a class="nav-link" href="/">Главная страница</a>
+{% if user.is_authenticated %}
+  <a class="nav-link" href="/accounts/home">Личный кабинет</a>
+  <a class="nav-link" href="{% url 'logout'%}">Выйти</a>
+{% else %}
+  <a class="nav-link" href="/accounts/login">Вход</a>
+  <a class="nav-link" href="/accounts/signup">Регистрация</a>
+{% endif %}
+{% endblock %}
 
-                    {% for option in question.options %}
-                        <p><input type="radio" name="a" value="1417">   {{ option.text|linebreaksbr }}</p>
-                    {% endfor %}
-                     <br />  <br />
-            {% else %}
+{% block maincontent %}
+    <form action="send/{{code}}/{{questions_number}}/" method="post" >
+        {% csrf_token %}
 
-                {% for option in question.options %}
-                    <p><input type="checkbox" name="a" value="1417">   {{ option.text|linebreaksbr }}</p>
-                {% endfor %}
-                 <br />  <br />
-            {% endif %}
+        <div class="text-left mt-4">
+            <h5>Название теста: {{ test_title }}</h5>
         </div>
-    {% endfor %}
 
-</body>
-</html>
+        <div class="mt-4 mb-4">
+            <input class="form-control" type="text" name="user_name" placeholder="Введите имя">
+        </div>
+
+        <table class="table table-bordered table-dark">
+            <thead><th>Cписок вопросов</th></thead>
+            {% for question in questions.values %}
+            <tr>
+                <td>
+                    <div class="text-left">
+                        <p>Возможное количество баллов: {{ question.amount_of_points }}</p>
+                        <h4>{{ question.text }}</h4>
+
+                        {% if question.question_type == 1 %}
+                        <p>Вопрос с письменным ответом</p>
+                        {% elif question.question_type == 2 %}
+                        <p>Вопрос с одним вариантом ответа</p>
+                        {% else %}
+                        <p>Вопрос с несколькими вариантами ответа</p>
+                        {% endif %}
+
+                        {% if question.image %}
+                        <p><img src="{{ question.image.url }}" width="350"></p>
+                        {% endif%}
+
+                        {% if question.question_type == 1 %}
+                        <input type="text" class="form-control" name="answer_{{ question.id }}" placeholder="Введите ответ">
+
+                        {% elif question.question_type == 2 %}
+                        {% for option in question.options %}
+                        <p>
+                            <input type="checkbox" class="custom-checkbox" name="q_{{ option.id }}" id="q_{{ option.id }}">
+                            <label for="q_{{ option.id }}"></label>
+                            {{ option.text|linebreaksbr }}
+                        </p>
+                        {% endfor %}
+
+                        {% else %}
+                        {% for option in question.options %}
+                        <p>
+                            <input type="checkbox" class="custom-checkbox ml-3" name="q_{{ option.id }}" id="q_{{ option.id }}">
+                            <label for="q_{{ option.id }}"></label>
+                            {{ option.text|linebreaksbr }}
+                        </p>
+                        {% endfor %}
+
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+
+        <div class="mt-4 mb-2">
+            <button class="btn btn-lg btn-secondary" type="submit">Отправить</button>
+        </div>
+
+    </form>
+{% endblock %}

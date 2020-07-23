@@ -1,7 +1,10 @@
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
+from django.views.decorators import csrf
 
 from test_constructor.models import Test, Question, Option
+
+from testing.models import TestResult, QuestionResult, OptionResult
 
 
 def enter_code(request):
@@ -9,6 +12,7 @@ def enter_code(request):
 
 
 def open_test(request):
+
     if request.method == "POST":
 
         entered_code = request.POST.get("code")
@@ -42,12 +46,67 @@ def run_test(request):
              "image": question.image,
              "amount_of_points": question.amount_of_points,
              "options": options,
-             "question_type": type}
+             "question_type": type,
+             "id": question.id}
         questions[i] = d
         i += 1
-    data = {"questions": questions}
+    data = {"questions": questions, "code": code, "questions_number": len(questions), "first_question_id": questions[0]["id"], "test_title": Test.objects.get(code=code).title}
 
     return  render(request, "testing/testRunner.html", context=data)
+
+def send_answers(request, code, questions_number):
+    if request.method == 'POST':
+
+        test_result = TestResult()
+        test_result.test = Test.objects.get(code=code)
+        test_result.user = request.POST.get("user_name")
+        test_result.save()
+
+        question_results = []
+
+        test_result.amount_of_points = 0
+
+        question_list = list(Question.objects.filter(test_code=code).values())
+
+        for i in range (int(questions_number)):
+            question_results.append(2)
+            question_results[i] = QuestionResult()
+
+            question_results[i].test_result = test_result
+            question_results[i].question = Question.objects.get(id=question_list[i]["id"])
+
+            question_results[i].text_answer = request.POST.get("answer_" + str(question_list[i]["id"]))
+            #       если будет ругаться то добавить иф на тип вопроса перед строчкой выше
+
+            question_results[i].amount_of_points = question_results[i].question.amount_of_points
+
+
+            option_list = list(question_results[i].question.option_set.values())
+
+            option_results = []
+
+            for j in range (len(option_list)):
+                option_results.append(2)
+                option_results[j] = OptionResult()
+                option_results[j].question_result = question_results[i]
+                option_results[j].option = question_results[i].question.option_set.get(id=option_list[j]["id"])
+                option_results[j].question_result.save()
+                # option_results[j].is_selected = False
+                # if request.POST.get("q_" + str(option_list[i]["id"])):
+                option_results[j].is_selected = request.POST.get("q_" + str(option_list[j]["id"])) == "on"
+                option_results[j].save()
+
+                if option_results[j].is_selected != option_list[j]["is_correct"]:
+                    question_results[i].amount_of_points = 0
+            question_results[i].save()
+            test_result.amount_of_points += question_results[i].amount_of_points
+        test_result.save()
+    return render(request, "testing/afterTesting.html")
+
+
+
+
+# entry_list = list(Entry.objects.all())
 
 
 #{{ value|linebreaksbr }}

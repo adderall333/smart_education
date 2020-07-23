@@ -29,18 +29,18 @@
     <form method="POST" enctype="multipart/form-data" action="/test_constructor/add_question/?code={{code}}" class="text-left">
         {% csrf_token %}
         <div class="form-group">
-            <label for="textarea1">Текст вопроса</label>
-            <textarea name="text" class="form-control" id="textarea1" rows="3"></textarea>
+            <label for="textarea1">Текст вопроса:</label>
+            <textarea autocomplete="off" name="text" class="form-control" id="textarea1" rows="3"></textarea>
         </div>
         <div>
-            <label>Стоимость вопроса</label>
+            <label>Стоимость вопроса:</label>
             <input type="number" name="amount_of_points" required>
         </div>
         <div>
-            <label>Картинка</label>
+            <label>Изображение:</label>
             <input type="file" name="image" accept="image/*">
         </div>
-        <label>Варианты ответа</label>
+        <label>Варианты ответа:</label>
         <div id="input0"></div>
         <div class="mt-1">
           <button class="btn btn-sm btn-secondary" type="button" onclick="addInput()">+</button>

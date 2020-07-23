@@ -15,13 +15,13 @@
     <h3 class="text-left mt-3 mb-3">Название теста: {{ test_results.first.test.title }}</h3>
     <table class="table table-bordered table-dark">
         <thead><th>Имя тестируемого</th><th>Количество баллов</th><th>Результаты</th></thead>
+        {% for test_result in test_results %}
         <tr>
-            {% for test_result in test_results %}
             <td class="text-left">{{ test_result.user }}</td>
             <td>{{ test_result.amount_of_points }}</td>
             <td><a href="/accounts/results/?code={{ test_result.test.code }}&user={{ test_result.user }}">Посмотреть</a></td>
-            {% endfor %}
         </tr>
+        {% endfor %}
     </table>
     {% else %}
     <h2>Этот тест ещё никто не прошёл</h2>

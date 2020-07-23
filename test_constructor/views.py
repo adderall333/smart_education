@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.http import HttpResponseNotFound
+from django.http import HttpResponse
 from django.core.exceptions import PermissionDenied
 from .models import Test, Question, Option
-from testing.models import TestResult
 
 import datetime
 import random
@@ -86,21 +86,24 @@ def add_question(request):
         if Test.objects.get(code=code).author != request.user:
             raise PermissionDenied
 
+        post = request.POST.dict()
         question.test_code = code
         question.id = request.GET.get("id")
-        question.text = request.POST.get("text")
-        question.amount_of_points = request.POST.get("amount_of_points")
+        question.text = post.pop("text")
+        question.amount_of_points = post.pop("amount_of_points")
         question.image = request.FILES.get("image")
         question.save()
-        for i in range(20):
-            try:
-                option = Option()
-                option.text = request.POST.get("option" + str(i + 1))
-                option.question = question
-                option.is_correct = request.POST.get("correct" + str(i + 1)) == "on"
-                option.save()
-            except:
-                break
+        i = 1
+        while post.get("option" + str(i), False):
+            option = Option()
+            option.text = post["option" + str(i)]
+            option.question = question
+            if post.get("correct" + str(i), False):
+                option.is_correct = True
+            else:
+                option.is_correct = False
+            i += 1
+            option.save()
         return HttpResponseRedirect("/test_constructor/test/?code={0}".format(code))
 
 
@@ -116,25 +119,25 @@ def edit(request):
         options = question.option_set.all()
 
         if request.method == "POST":
-            question.text = request.POST.get("text")
-            question.amount_of_points = request.POST.get("amount_of_points")
+            post = request.POST.dict()
+            question.text = post["text"]
+            question.amount_of_points = post["amount_of_points"]
             if request.FILES.get("image"):
                 question.image = request.FILES.get("image")
             question.save()
             for option in options:
-                try:
-                    option.delete()
-                except:
-                    break
-            for i in range(20):
-                try:
-                    option = Option()
-                    option.text = request.POST.get("option" + str(i + 1))
-                    option.question = question
-                    option.is_correct = request.POST.get("correct" + str(i + 1)) == "on"
-                    option.save()
-                except:
-                    break
+                option.delete()
+            i = 1
+            while post.get("option" + str(i), False):
+                option = Option()
+                option.text = post["option" + str(i)]
+                option.question = question
+                if post.get("correct" + str(i), False):
+                    option.is_correct = True
+                else:
+                    option.is_correct = False
+                i += 1
+                option.save()
             return HttpResponseRedirect("/test_constructor/test/?code={0}".format(code))
         else:
             return render(request, "test_constructor/edit.html", {"question": question, "options": options})
