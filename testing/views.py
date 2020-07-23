@@ -75,7 +75,7 @@ def send_answers(request, code, questions_number):
             question_results[i].test_result = test_result
             question_results[i].question = Question.objects.get(id=question_list[i]["id"])
 
-            question_results[i].test_answer = request.POST.get("answer_" + str(question_list[i]["id"]))
+            question_results[i].text_answer = request.POST.get("answer_" + str(question_list[i]["id"]))
             #       если будет ругаться то добавить иф на тип вопроса перед строчкой выше
 
             question_results[i].amount_of_points = question_results[i].question.amount_of_points
@@ -101,8 +101,8 @@ def send_answers(request, code, questions_number):
             question_results[i].save()
             test_result.amount_of_points += question_results[i].amount_of_points
         test_result.save()
-    return HttpResponse("<h2> Вы прошли тест, резы у препода, на главную сами перейдёте </h2> " +
-                        )
+    return render(request, "testing/afterTesting.html")
+
 
 
 
