@@ -4,10 +4,6 @@
 Результаты тесты
 {% endblock %}
 
-{% block script %}
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
-{%endblock%}
-
 {% block navlinks %}
     <a class="nav-link" href="/">Главная страница</a>
     <a class="nav-link" href="/accounts/home">Личный кабинет</a>
@@ -16,8 +12,8 @@
 
 {% block maincontent %}
     {% if test_results %}
-        <h3 class="text-left mt-3 mb-3">Название теста: {{ test_results.first.test.title }}</h3>
-            <div class="container mb-3 mt-3"> </div>
+            <h3 class="text-left mt-3 mb-3">Название теста: {{ test_results.first.test.title }}</h3>
+            <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
             <table class="table table-bordered table-hover table-dark mydatatable">
             <thead><th>Имя тестируемого</th><th>Количество баллов</th><th>Результаты</th></thead>
             {% for test_result in test_results %}
@@ -32,7 +28,7 @@
             <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
             <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
             <script>
-                $('.mydatatable').DataTable({
+               $('.mydatatable').DataTable({
                 "oLanguage":{
                     "sSearch": "Поиск",
                     "sShowing": "Показано 0 to 0 из 0 записей",
@@ -52,4 +48,8 @@
     {% else %}
     <h2>Этот тест ещё никто не прошёл</h2>
     {% endif %}
+{% endblock %}
+
+{% block footertext %}
+Что и требовалось протестировать.
 {% endblock %}
