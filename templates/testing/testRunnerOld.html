@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Running test</title>
+</head>
+<body>
+    {% for question in questions.values %}
+        <div>
+            <p>points: {{ question.amount_of_points }}</p>
+            <h2>{{ question.text }}</h2>
+            {% if question.image %}
+                <p><img src="{{ question.image.url }}" width="350"></p>
+            {% endif%}
+
+            {% if question.question_type == 1 %}
+            <input type="text" name="answer">                     <br />  <br />
+            {% elif question.question_type == 2 %}
+
+                    {% for option in question.options %}
+                        <p><input type="radio" name="a{{ question.text }}" value="1417">   {{ option.text|linebreaksbr }}</p>
+                    {% endfor %}
+                     <br />  <br />
+            {% else %}
+
+                {% for option in question.options %}
+                    <p><input type="checkbox" name="b{{ question.text }}>" value="1417">   {{ option.text|linebreaksbr }}</p>
+                {% endfor %}
+                 <br />  <br />
+            {% endif %}
+        </div>
+    {% endfor %}
+
+</body>
+</html>

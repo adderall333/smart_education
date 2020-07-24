@@ -1,7 +1,7 @@
 {% extends 'main/base.html' %}
 
 {% block title %}
-Введите код
+Конец тестирования
 {% endblock %}
 
 {% block navlinks %}
@@ -16,9 +16,7 @@
 {% endblock %}
 
 {% block maincontent %}
-    <form method="POST" action="/testing/open_test/">
-        {% csrf_token %}
-        <input autocomplete="off" type="text" class="form-control form-control-lg mb-3 mr-sm-3" name="code" placeholder="Введите код теста">
-        <input class="btn btn-lg btn-secondary" type="submit" value="Присоединиться">
-    </form>
+    <h1 class="cover-heading">Вы прошли тест!</h1>
+    <p class="lead">Результаты теста можете узнать у его составителя.</p>
+    <a href="/" class="btn btn-lg btn-secondary mt-2">На главную</a>
 {% endblock %}
