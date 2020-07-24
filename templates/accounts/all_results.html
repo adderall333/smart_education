@@ -31,14 +31,21 @@
             <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
             <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
             <script>
-                 var options = {
-                    language: 'ru'
-                    };
-                $('.mydatatable').DataTable({
+               $('.mydatatable').DataTable({
+                "oLanguage":{
+                    "sSearch": "Поиск",
+                    "sShowing": "Показано 0 to 0 из 0 записей",
+                    "sInfo":"Показано _END_ из _TOTAL_ записей",
+                    "sInfoFiltered":"(отфиьтровано из _MAX_ записей)",
+                    "sLengthMenu":"Показывать _MENU_ записей",
+                    "oPaginate": {
+                    "sPrevious":"Предыдущая",
+                    "sNext":"Следующая"}},
                  "aaSorting": [],
                   columnDefs: [{
                   orderable: false,
-                  targets: 2}]
+                  targets: 2},
+                  ]
               });
             </script>
     {% else %}
