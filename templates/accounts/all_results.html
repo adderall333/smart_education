@@ -4,6 +4,7 @@
 Результаты тесты
 {% endblock %}
 
+
 {% block navlinks %}
     <a class="nav-link" href="/">Главная страница</a>
     <a class="nav-link" href="/accounts/home">Личный кабинет</a>
@@ -12,18 +13,39 @@
 
 {% block maincontent %}
     {% if test_results %}
-    <h3 class="text-left mt-3 mb-3">Название теста: {{ test_results.first.test.title }}</h3>
-    <table class="table table-bordered table-dark">
-        <thead><th>Имя тестируемого</th><th>Количество баллов</th><th>Результаты</th></thead>
-        {% for test_result in test_results %}
-        <tr>
-            <td class="text-left">{{ test_result.user }}</td>
-            <td>{{ test_result.amount_of_points }}</td>
-            <td><a href="/accounts/results/?code={{ test_result.test.code }}&user={{ test_result.user }}">Посмотреть</a></td>
-        </tr>
-        {% endfor %}
-    </table>
+            <h3 class="text-left mt-3 mb-3">Название теста: {{ test_results.first.test.title }}</h3>
+            <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+            <table class="table table-bordered table-hover table-dark mydatatable">
+            <thead><th>Имя тестируемого</th><th>Количество баллов</th><th>Результаты</th></thead>
+            {% for test_result in test_results %}
+            <tr>
+                <td class="text-left">{{ test_result.user }}</td>
+                <td>{{ test_result.amount_of_points }}</td>
+                <td><a href="/accounts/results/?code={{ test_result.test.code }}&user={{ test_result.user }}">Посмотреть</a></td>
+            </tr>
+            {% endfor %}
+            </table>
+            <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/poper.js/1.14.7/umd/poper.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+            <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+            <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+            <script>
+                 var options = {
+                    language: 'ru'
+                    };
+                $('.mydatatable').DataTable({
+                 "aaSorting": [],
+                  columnDefs: [{
+                  orderable: false,
+                  targets: 2}]
+              });
+            </script>
     {% else %}
     <h2>Этот тест ещё никто не прошёл</h2>
     {% endif %}
+{% endblock %}
+
+{% block footertext %}
+Что и требовалось протестировать.
 {% endblock %}
