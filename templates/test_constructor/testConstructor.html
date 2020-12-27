@@ -1,0 +1,80 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Конструктор теста
+{% endblock %}
+
+{% block script %}
+{% load static %}
+<script type="text/javascript" src="{% static 'test_constructor/test_constructor.js' %}"></script>
+{% endblock %}
+
+{% block navlinks %}
+  <a class="nav-link" href="/">Главная страница</a>
+  <a class="nav-link" href="/accounts/home">Личный кабинет</a>
+  <a class="nav-link" href="{% url 'logout'%}">Выйти</a>
+{% endblock %}
+
+{% block maincontent %}
+{% if already_used %}
+    <script>
+        if (confirm("Этот тест уже кто-то проходил. Его изменение вызовет ошибку. Хотите сохранить измененный тест как новый?")) {
+            location.assign("/test_constructor/save_as_new/?code={{ code }}");
+        }
+        else {
+            location.assign("/accounts/home");
+        }
+    </script>
+{% else %}
+    <form method="POST" enctype="multipart/form-data" action="/test_constructor/add_question/?code={{code}}" class="text-left">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="textarea1">Текст вопроса:</label>
+            <textarea autocomplete="off" name="text" class="form-control" id="textarea1" rows="3"></textarea>
+        </div>
+        <div>
+            <label>Стоимость вопроса:</label>
+            <input type="number" name="amount_of_points" required>
+        </div>
+        <div>
+            <label>Изображение:</label>
+            <input type="file" name="image" accept="image/*">
+        </div>
+        <label>Варианты ответа:</label>
+        <div id="input0"></div>
+        <div class="mt-1">
+          <button class="btn btn-sm btn-secondary" type="button" onclick="addInput()">+</button>
+          <button class="btn btn-sm btn-secondary" type="button" onclick="removeInput()">-</button>
+        </div>
+        <div class="mt-2"><input class="btn btn-secondary" type="submit" value="Добавить вопрос"></div>
+    </form>
+    <div class="mt-4">
+        <a href="/accounts/home" class="btn btn-secondary">Сохранить тест</a>
+    </div>
+    {% if questions.count > 0 %}
+    <div class="mt-4">
+    <h3>Список вопросов</h3>
+    <table class="table table-bordered table-dark">
+        <thead>
+        <tr>
+            <th>Текст вопроса</th>
+            <th>Стоимость</th>
+            <th>Действие</th>
+        </tr>
+        </thead>
+        {% for question in questions %}
+        <tr>
+            <td class="text-left">{{ question.text }}</td>
+            <td>{{ question.amount_of_points }}</td>
+            <td><a href="edit/?code={{code}}&id={{question.id}}">Изменить</a> <a href="delete/?code={{code}}&id={{question.id}}" onclick="return deleteQuestion()">Удалить</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+    {% endif %}
+{% endif %}
+{% endblock %}
+
+{% block footertext %}
+Тестировать, тестировать и ещё раз тестировать.
+{% endblock %}

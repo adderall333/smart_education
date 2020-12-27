@@ -1,0 +1,28 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Введите код
+{% endblock %}
+
+{% block navlinks %}
+  <a class="nav-link" href="/">Главная страница</a>
+{% if user.is_authenticated %}
+  <a class="nav-link" href="/accounts/home">Личный кабинет</a>
+  <a class="nav-link" href="{% url 'logout'%}">Выйти</a>
+{% else %}
+  <a class="nav-link" href="/accounts/login">Вход</a>
+  <a class="nav-link" href="/accounts/signup">Регистрация</a>
+{% endif %}
+{% endblock %}
+
+{% block maincontent %}
+    <form method="POST" action="/testing/open_test/">
+        {% csrf_token %}
+        <input autocomplete="off" type="text" class="form-control form-control-lg mb-3 mr-sm-3" name="code" placeholder="Введите код теста">
+        <input class="btn btn-lg btn-secondary" type="submit" value="Присоединиться">
+    </form>
+{% endblock %}
+
+{% block footertext %}
+Не хочу учиться, хочу тестироваться.
+{% endblock %}
