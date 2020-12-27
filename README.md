@@ -9,6 +9,6 @@
 
 ---
 
-Technologies:
+### Technologies:
 * Django
 * Bootstrap 4 
